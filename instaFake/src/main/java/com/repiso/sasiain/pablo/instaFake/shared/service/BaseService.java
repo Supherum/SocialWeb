@@ -1,4 +1,4 @@
-package com.repiso.sasiain.pablo.instaFake.service;
+package com.repiso.sasiain.pablo.instaFake.shared.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

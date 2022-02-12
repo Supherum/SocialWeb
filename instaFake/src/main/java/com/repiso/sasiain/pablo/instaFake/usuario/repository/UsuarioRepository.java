@@ -12,7 +12,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     Optional<Usuario> findFirstByNick(String nick);
 
-    List<Usuario> findByRol (Role role);
+    List<Usuario> findByRole (Role role);
 
 
 }

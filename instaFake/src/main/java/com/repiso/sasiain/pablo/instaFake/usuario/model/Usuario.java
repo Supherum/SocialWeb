@@ -1,5 +1,6 @@
 package com.repiso.sasiain.pablo.instaFake.usuario.model;
 
+import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
 import lombok.*;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -39,20 +41,26 @@ public class Usuario implements Serializable, UserDetails {
 
     private UUID id;
     private String nombre,apellidos,direccion,email,telefono,ciudad;
-    private String avatar;
+    private String fotoPerfil;
 
     @NaturalId
     private String nick;
     private String password;
 
     @Builder.Default
-    private LocalDateTime lastPasswordChangeTime=LocalDateTime.now();
+    private LocalDateTime fechaUltimaPasswordCambiada=LocalDateTime.now();
 
     @CreatedDate
-    private LocalDateTime createdTime;
+    @Builder.Default
+    private LocalDateTime fechaCreacion=LocalDateTime.now();
+
+    private LocalDate fechaNaciemiento;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "usuario")
+    private List<Publicacion> publicacionList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,7 +1,7 @@
 package com.repiso.sasiain.pablo.instaFake.security.jwt;
 
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
-import com.repiso.sasiain.pablo.instaFake.usuario.service.AuthService;
+import com.repiso.sasiain.pablo.instaFake.usuario.service.UsuarioAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FiltroSeguridad extends OncePerRequestFilter {
 
-    private final AuthService authService;
+    private final UsuarioAuthService authService;
     private final JwtManager jwtManager;
 
     @Override

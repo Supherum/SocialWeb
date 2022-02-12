@@ -1,8 +1,9 @@
 package com.repiso.sasiain.pablo.instaFake.security;
 
-import com.salesianos.triana.realestate.v2.shared.security.jwt.Autenticacion;
-import com.salesianos.triana.realestate.v2.shared.security.jwt.Autorizacion;
-import com.salesianos.triana.realestate.v2.shared.security.jwt.FiltroSeguridad;
+
+import com.repiso.sasiain.pablo.instaFake.security.jwt.Autenticacion;
+import com.repiso.sasiain.pablo.instaFake.security.jwt.FiltroSeguridad;
+import com.repiso.sasiain.pablo.instaFake.security.jwt.Autorizacion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
