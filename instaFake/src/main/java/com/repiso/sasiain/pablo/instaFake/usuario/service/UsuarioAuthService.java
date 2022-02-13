@@ -23,7 +23,6 @@ public class UsuarioAuthService extends BaseService<Usuario, UUID, UsuarioReposi
     private final UsuarioRepository usuarioRepository;
     private final UsuarioRegisterDtoConverter useUsuarioRegisterDtoConverter;
 
-    // BUSCA A UN USUARIO POR SU NICK
     @Override
     public UserDetails loadUserByUsername(String nick) throws UsernameNotFoundException {
         return usuarioRepository.findFirstByNick(nick)
@@ -35,10 +34,8 @@ public class UsuarioAuthService extends BaseService<Usuario, UUID, UsuarioReposi
     }
 
 
-    // Crea un nuevo Usuario
     public Usuario saveUsuario(UsuarioRegisterDto dto, Role rol){
         return save(useUsuarioRegisterDtoConverter.usuarioDtoToUsuario(dto,rol));
-
     }
 
 }

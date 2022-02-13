@@ -14,6 +14,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +44,9 @@ public class Usuario implements Serializable, UserDetails {
     private String nombre,apellidos,direccion,email,telefono,ciudad;
     private String fotoPerfil;
 
+    @Builder.Default
+    private boolean isPrivado=false;
+
     @NaturalId
     private String nick;
     private String password;
@@ -53,14 +57,30 @@ public class Usuario implements Serializable, UserDetails {
     @CreatedDate
     @Builder.Default
     private LocalDateTime fechaCreacion=LocalDateTime.now();
-
     private LocalDate fechaNaciemiento;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "usuario")
-    private List<Publicacion> publicacionList;
+    private List<Publicacion> publicacionList=new ArrayList<>();
+
+    @Builder.Default
+    @ManyToMany (fetch = FetchType.LAZY)
+    private List<Usuario> listaSeguidores=new ArrayList<>();
+
+    @Builder.Default
+    @ManyToMany (fetch = FetchType.LAZY,mappedBy = "listaSeguidores")
+    private List<Usuario> listaSigo=new ArrayList<>();
+
+    @Builder.Default
+    @ManyToMany (fetch = FetchType.LAZY)
+    private List<Usuario> listaSolicitantes=new ArrayList<>();
+
+    @Builder.Default
+    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "listaSolicitantes")
+    private List<Usuario> listaSolicitados=new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -91,4 +111,5 @@ public class Usuario implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

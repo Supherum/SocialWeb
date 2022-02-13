@@ -31,12 +31,27 @@ public class Publicacion {
             }
     )
     private UUID id;
-    private String title,description;
+    private String titulo,descripcion;
     @CreatedDate
-    private LocalDateTime createdTime;
+
+    @Builder.Default
+    private LocalDateTime createdTime=LocalDateTime.now();
+
     @ManyToOne
     private Usuario usuario;
+
     @Builder.Default
     @ElementCollection
-    private List<String> resourceList=new ArrayList<>();
+    private List<String> recursosDePublicacion=new ArrayList<>();
+
+
+    public void agregarUsuarioAPublicacion(Usuario u){
+        this.usuario=u;
+        u.getPublicacionList().add(this);
+    }
+
+    public void quitarUsuarioAPublicacion(Usuario u){
+        this.usuario=null;
+        u.getPublicacionList().remove(this);
+    }
 }
