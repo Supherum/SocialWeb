@@ -11,6 +11,8 @@ public class PublicacionResponseDtoConverter {
                 .titulo(publicacion.getTitulo())
                 .descipcion(publicacion.getDescripcion())
                 .id(publicacion.getId())
+                .recurso(publicacion.getRecurso())
+                .isPrivate(publicacion.isPrivate())
                 .build();
     }
 }

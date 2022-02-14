@@ -8,8 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -32,6 +30,7 @@ public class Publicacion {
     )
     private UUID id;
     private String titulo,descripcion;
+    private boolean isPrivate;
     @CreatedDate
 
     @Builder.Default
@@ -40,10 +39,7 @@ public class Publicacion {
     @ManyToOne
     private Usuario usuario;
 
-    @Builder.Default
-    @ElementCollection
-    private List<String> recursosDePublicacion=new ArrayList<>();
-
+    private String recurso;
 
     public void agregarUsuarioAPublicacion(Usuario u){
         this.usuario=u;

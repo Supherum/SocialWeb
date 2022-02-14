@@ -11,5 +11,6 @@ public class UsuarioLoginDtoResponse {
     private String nombre;
     private String apellidos;
     private String rol;
+    private String fotoPerfil;
     private String tokenJwt;
 }

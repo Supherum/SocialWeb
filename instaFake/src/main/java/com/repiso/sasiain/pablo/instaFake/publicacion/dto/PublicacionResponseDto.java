@@ -12,4 +12,6 @@ public class PublicacionResponseDto {
     private UUID id;
     private String titulo;
     private String descipcion;
+    private boolean isPrivate;
+    private String recurso;
 }

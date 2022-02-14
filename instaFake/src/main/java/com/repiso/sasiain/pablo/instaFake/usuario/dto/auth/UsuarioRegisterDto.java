@@ -23,4 +23,5 @@ public class UsuarioRegisterDto {
     private LocalDate fechaNacimiento;
     private String password;
     private String password2;
+    private String uri;
 }

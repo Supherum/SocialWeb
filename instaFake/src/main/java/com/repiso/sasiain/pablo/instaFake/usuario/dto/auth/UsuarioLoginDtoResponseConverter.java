@@ -13,6 +13,7 @@ public class UsuarioLoginDtoResponseConverter {
                 .apellidos(usuario.getApellidos())
                 .rol(usuario.getRole().name())
                 .tokenJwt(token)
+                .fotoPerfil(usuario.getFotoPerfil())
                 .build();
     }
 }

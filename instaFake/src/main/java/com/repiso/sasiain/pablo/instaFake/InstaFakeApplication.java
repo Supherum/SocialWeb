@@ -1,11 +1,11 @@
 package com.repiso.sasiain.pablo.instaFake;
 
-import com.repiso.sasiain.pablo.instaFake.shared.service.file.FileConfig;
+import com.repiso.sasiain.pablo.instaFake.shared.file.config.StorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@EnableConfigurationProperties(FileConfig.class)
+@EnableConfigurationProperties(StorageProperties.class)
 @SpringBootApplication
 public class InstaFakeApplication {
 

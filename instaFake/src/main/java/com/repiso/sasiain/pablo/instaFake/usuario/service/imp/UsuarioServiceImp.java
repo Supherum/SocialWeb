@@ -1,5 +1,5 @@
 package com.repiso.sasiain.pablo.instaFake.usuario.service.imp;
-import com.repiso.sasiain.pablo.instaFake.shared.service.file.FileService;
+import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDto;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import com.repiso.sasiain.pablo.instaFake.usuario.repository.UsuarioRepository;
 import com.repiso.sasiain.pablo.instaFake.usuario.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

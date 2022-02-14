@@ -10,6 +10,8 @@ public class PublicacionNuevaDtoConverter {
         return Publicacion.builder()
                 .descripcion(dto.getDescripcion())
                 .titulo(dto.getTitulo())
+                .recurso(dto.getResource())
+                .isPrivate(dto.isPrivate())
                 .build();
     }
 }

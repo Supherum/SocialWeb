@@ -22,6 +22,7 @@ public class UsuarioRegisterDtoConverter {
                 .nick(dto.getNick())
                 .password(codificador.encode(dto.getPassword()))
                 .role(role)
+                .fotoPerfil(dto.getUri())
                 .build();
     }
 }
