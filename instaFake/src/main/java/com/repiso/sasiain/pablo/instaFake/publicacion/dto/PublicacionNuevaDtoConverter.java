@@ -16,4 +16,12 @@ public class PublicacionNuevaDtoConverter {
                 .isPrivate(dto.isPrivate())
                 .build();
     }
+
+    public Publicacion publicacionNuevaDtoEditPublicacion (PublicacionNuevaDto dto,Publicacion publicacion){
+        publicacion.setDescripcion(dto.getDescripcion());
+        publicacion.setListrecurso(dto.getResource());
+        publicacion.setPrivate(dto.isPrivate());
+        publicacion.setTitulo(dto.getTitulo());
+       return publicacion;
+    }
 }

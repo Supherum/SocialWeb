@@ -7,5 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 public interface PublicacionRepository extends JpaRepository<Publicacion, UUID> {
-
+    @Query(value = """
+            SELECT p.usuario_id FROM publicacion p
+            WHERE p.id=:id
+            """,nativeQuery = true)
+    public UUID findPublicationUserId (UUID id);
 }

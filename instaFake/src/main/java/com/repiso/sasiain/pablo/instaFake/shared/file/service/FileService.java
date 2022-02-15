@@ -24,9 +24,11 @@ public interface FileService {
 
     Resource loadAsResource(String filename) throws MalformedURLException, FileNotFoundException;
 
-    void deleteFile(String filename);
+    void deleteFile(String filename) throws IOException;
 
     void deleteAll();
+
+    void deleteListFile(List<String> listFilename);
 
     String rescaleAndSaveImagen(MultipartFile file,int size) throws IOException;
 

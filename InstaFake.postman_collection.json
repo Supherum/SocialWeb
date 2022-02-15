@@ -76,14 +76,9 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/estaf/Desktop/Pablo/Imagenes/UID/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/foto.jpg"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "localhost:8080/register/usuario",
@@ -171,14 +166,9 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/estaf/Desktop/Pablo/Imagenes/4.png"
+									"src": "/C:/Users/repiso.sapab21/Desktop/post.jpg"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "localhost:8080/publicacion/",
@@ -189,6 +179,63 @@
 							"path": [
 								"publicacion",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Publicacion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"idPublicacion\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "publicacion",
+									"value": "{\"titulo\":\"Editada\",\"descripcion\":\"También editada\",\"isPrivate\":true\n}",
+									"contentType": "application/json",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/repiso.sapab21/Desktop/foto.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/publicacion/{{idPublicacion}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"publicacion",
+								"{{idPublicacion}}"
 							]
 						}
 					},

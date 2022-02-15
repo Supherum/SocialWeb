@@ -6,6 +6,7 @@ import com.repiso.sasiain.pablo.instaFake.publicacion.servicio.PublicacionServic
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,23 +32,20 @@ public class PublicacionController {
                                                                     @RequestPart ("file") MultipartFile file,
                                                                     @AuthenticationPrincipal Usuario usuario) throws IOException {
 
-        List<String> nombreArchivos=fileService.saveFileWithCopy(file,1024);
-        String uri1 =fileService.getUri(nombreArchivos.get(0));
-        String uri2 =fileService.getUri(nombreArchivos.get(1));
-        dto.setResource(new ArrayList<>());
-        dto.getResource().add(uri1);
-        dto.getResource().add(uri2);
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(publicacionServicio.guardarNuevaPublicacion(dto,usuario));
+        dto=publicacionServicio.addResourceToDto(file,dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(publicacionServicio.guardarNuevaPublicacion(dto,usuario));
     }
 
 
     @PutMapping("/{id}")
-    public PublicacionResponseDto editarPublicacion (@Valid @RequestPart ("publicacion") PublicacionNuevaDto dto,
+    public PublicacionResponseDto editarPublicacion (@PathVariable("id") UUID id,
+                                                     @Valid @RequestPart ("publicacion") PublicacionNuevaDto dto,
                                                      @RequestPart ("file") MultipartFile file,
-                                                     @AuthenticationPrincipal Usuario usuario){
+                                                     @AuthenticationPrincipal Usuario usuario) throws IOException {
 
-
-        return null;
+        dto=publicacionServicio.addResourceToDto(file,dto);
+        return publicacionServicio.editarPublicacion(id,dto,usuario);
     }
+
+
 }

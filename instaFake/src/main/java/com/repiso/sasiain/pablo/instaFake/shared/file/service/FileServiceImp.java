@@ -94,8 +94,19 @@ public class FileServiceImp implements FileService{
     }
 
     @Override
-    public void deleteFile(String filename) {
+    public void deleteFile(String filename) throws IOException {
+        Path ruta =Paths.get("archivos/"+filename);
+        Files.delete(ruta);
+    }
 
+    public void deleteListFile(List<String> listaFileNames){
+        listaFileNames.forEach(x-> {
+            try {
+                deleteFile(x);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override

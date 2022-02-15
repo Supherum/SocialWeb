@@ -1,17 +1,23 @@
 package com.repiso.sasiain.pablo.instaFake.publicacion.servicio;
 
+import com.repiso.sasiain.pablo.instaFake.error.exceptions.EntityNotFoundExceptionCustom;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionNuevaDto;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionNuevaDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionResponseDto;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionResponseDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
 import com.repiso.sasiain.pablo.instaFake.publicacion.repository.PublicacionRepository;
+import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.shared.service.BaseService;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import com.repiso.sasiain.pablo.instaFake.usuario.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +29,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     private final PublicacionNuevaDtoConverter publicacionNuevaDtoConverter;
     private final PublicacionResponseDtoConverter publicacionResponseDtoConverter;
     private final UsuarioRepository usuarioRepository;
+    private final FileService fileService;
 
     public PublicacionResponseDto guardarNuevaPublicacion (PublicacionNuevaDto dto, Usuario usuario){
 
@@ -32,9 +39,35 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacion));
     }
 
-    public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto){
+    public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto,Usuario usuario) throws IOException {
         Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
-
-        return null;
+        if(publicacionOpt.isPresent()){
+            delteResourcesToPublicacion(publicacionOpt.get());
+            Publicacion publicacionEditada=publicacionNuevaDtoConverter.publicacionNuevaDtoEditPublicacion(dto,publicacionOpt.get());
+            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacionEditada));
+        }
+        throw new EntityNotFoundExceptionCustom(EntityNotFoundExceptionCustom.class);
     }
+
+
+    public PublicacionNuevaDto addResourceToDto (MultipartFile file,PublicacionNuevaDto dto) throws IOException {
+        List<String> nombreArchivos=fileService.saveFileWithCopy(file,1024);
+        String uri1 =fileService.getUri(nombreArchivos.get(0));
+        String uri2 =fileService.getUri(nombreArchivos.get(1));
+        dto.setResource(new ArrayList<>());
+        dto.getResource().add(uri1);
+        dto.getResource().add(uri2);
+        return dto;
+    }
+
+    private void delteResourcesToPublicacion(Publicacion publicacion){
+        List<String> listaLinks=publicacion.getListrecurso();
+        listaLinks.stream().map(x->filtrarName(x));
+        fileService.deleteListFile(listaLinks);
+    }
+    private String filtrarName(String url){
+        String[] lista=url.split("/");
+        return lista[lista.length-1];
+    }
+
 }
