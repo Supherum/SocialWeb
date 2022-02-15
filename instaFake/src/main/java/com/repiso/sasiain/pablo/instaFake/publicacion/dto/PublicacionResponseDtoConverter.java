@@ -3,6 +3,8 @@ package com.repiso.sasiain.pablo.instaFake.publicacion.dto;
 import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class PublicacionResponseDtoConverter {
 
@@ -11,7 +13,7 @@ public class PublicacionResponseDtoConverter {
                 .titulo(publicacion.getTitulo())
                 .descipcion(publicacion.getDescripcion())
                 .id(publicacion.getId())
-                .recurso(publicacion.getRecurso())
+                .listaRecursos(publicacion.getListrecurso())
                 .isPrivate(publicacion.isPrivate())
                 .build();
     }

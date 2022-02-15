@@ -38,10 +38,7 @@ public class UsuarioRegisterController {
                                                                     @RequestPart ("file")MultipartFile file) throws IOException {
 
         String nombreArchivo=fileService.rescaleAndSaveImagen(file,124);
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/resource/")
-                .path(nombreArchivo)
-                .toUriString();
+        String uri = fileService.getUri(nombreArchivo);
         dto.setUri(uri);
 
         Usuario u= usuarioAuthService.saveUsuario(dto,Role.USER);

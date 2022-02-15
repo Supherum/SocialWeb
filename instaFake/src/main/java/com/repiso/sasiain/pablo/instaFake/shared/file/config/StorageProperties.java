@@ -10,5 +10,4 @@ public class StorageProperties {
 
     private String location;
 
-
 }

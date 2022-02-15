@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -56,7 +58,7 @@ public class FileServiceImp implements FileService{
     }
 
     @Override
-    public String saveFileWithCopy(MultipartFile file,int size) throws IOException {
+    public List<String> saveFileWithCopy(MultipartFile file, int size) throws IOException {
 
         if(file.isEmpty()) throw new FileEmptyExceptionCustom(FileEmptyExceptionCustom.class);
         String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
@@ -65,9 +67,9 @@ public class FileServiceImp implements FileService{
         nombreArchivo1+="."+extension;
 
         Files.copy(file.getInputStream(),this.ruta.resolve(nombreArchivo1),StandardCopyOption.REPLACE_EXISTING);
-        rescaleAndSaveImagen(file,size);
+        String imagenEscalada=rescaleAndSaveImagen(file,size);
 
-        return nombreArchivo1;
+        return List.of(nombreArchivo1,imagenEscalada);
     }
 
     @Override
@@ -106,8 +108,10 @@ public class FileServiceImp implements FileService{
         String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
         String nombreArchivo=generateName(file);
         nombreArchivo+="."+extension;
+
         BufferedImage bufferedImage= ImageIO.read(file.getInputStream());
         BufferedImage escalado =Scalr.resize(bufferedImage, size);
+
         OutputStream out=Files.newOutputStream(Paths.get("archivos/"+nombreArchivo));
         ImageIO.write(escalado,extension,out);
         return nombreArchivo;
@@ -128,6 +132,13 @@ public class FileServiceImp implements FileService{
 
         }
         return nuevoNombre;
+    }
+
+    public String getUri (String fileName){
+       return ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/resource/")
+                .path(fileName)
+                .toUriString();
     }
 
 }

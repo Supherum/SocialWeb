@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,12 +30,23 @@ public class PublicacionController {
                                                                     @RequestPart ("file") MultipartFile file,
                                                                     @AuthenticationPrincipal Usuario usuario) throws IOException {
 
-        String nombreArchivo=fileService.saveFileWithCopy(file,1024);
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/resource/")
-                .path(nombreArchivo)
-                .toUriString();
-        dto.setResource(uri);
-    return ResponseEntity.status(HttpStatus.CREATED).body(publicacionServicio.guardarPublicacion(dto,usuario));
+        List<String> nombreArchivos=fileService.saveFileWithCopy(file,1024);
+        String uri1 =fileService.getUri(nombreArchivos.get(0));
+        String uri2 =fileService.getUri(nombreArchivos.get(1));
+        dto.setResource(new ArrayList<>());
+        dto.getResource().add(uri1);
+        dto.getResource().add(uri2);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(publicacionServicio.guardarNuevaPublicacion(dto,usuario));
+    }
+
+
+    @PutMapping("/{id}")
+    public PublicacionResponseDto editarPublicacion (@Valid @RequestPart ("publicacion") PublicacionNuevaDto dto,
+                                                     @RequestPart ("file") MultipartFile file,
+                                                     @AuthenticationPrincipal Usuario usuario){
+
+
+        return null;
     }
 }

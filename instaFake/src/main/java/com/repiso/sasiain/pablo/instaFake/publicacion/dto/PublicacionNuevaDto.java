@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter
 @Builder
@@ -17,5 +20,6 @@ public class PublicacionNuevaDto {
     private String descripcion;
     @Builder.Default
     private boolean isPrivate=true;
-    private String resource;
+    @Builder.Default
+    private List<String> resource=new ArrayList<>();
 }

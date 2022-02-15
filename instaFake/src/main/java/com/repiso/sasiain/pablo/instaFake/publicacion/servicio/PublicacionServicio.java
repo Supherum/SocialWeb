@@ -12,6 +12,7 @@ import com.repiso.sasiain.pablo.instaFake.usuario.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,10 +24,17 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     private final PublicacionResponseDtoConverter publicacionResponseDtoConverter;
     private final UsuarioRepository usuarioRepository;
 
-    public PublicacionResponseDto guardarPublicacion (PublicacionNuevaDto dto, Usuario usuario){
+    public PublicacionResponseDto guardarNuevaPublicacion (PublicacionNuevaDto dto, Usuario usuario){
+
         Publicacion publicacion=publicacionNuevaDtoConverter.PublicacionNuevaDtoToPublicacion(dto);
         Usuario u=usuarioRepository.findFirstByNick(usuario.getNick()).get();
         publicacion.agregarUsuarioAPublicacion(u);
         return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacion));
+    }
+
+    public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto){
+        Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
+
+        return null;
     }
 }
