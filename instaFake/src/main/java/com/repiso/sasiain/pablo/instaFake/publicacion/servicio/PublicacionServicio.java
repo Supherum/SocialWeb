@@ -1,7 +1,6 @@
 package com.repiso.sasiain.pablo.instaFake.publicacion.servicio;
 
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.EntityNotFoundExceptionCustom;
-import com.repiso.sasiain.pablo.instaFake.error.exceptions.StorageExceptionCustom;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionNuevaDto;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionNuevaDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionResponseDto;
@@ -47,6 +46,8 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto,Usuario usuario) throws IOException {
         Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
         if(publicacionOpt.isPresent()){
+            Usuario p=usuarioRepository.findPublicationUserId(publicacionOpt.get().getId());
+            p.getId();
             delteResourcesToPublicacion(publicacionOpt.get());
             Publicacion publicacionEditada=publicacionNuevaDtoConverter.publicacionNuevaDtoEditPublicacion(dto,publicacionOpt.get());
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacionEditada));
@@ -54,6 +55,15 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         throw new EntityNotFoundExceptionCustom(EntityNotFoundExceptionCustom.class);
     }
 
+    public void deletePublicacion (UUID id,Usuario usuario) throws IOException {
+
+        Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
+        if(publicacionOpt.isPresent()){
+            delteResourcesToPublicacion(publicacionOpt.get());
+            repository.delete(publicacionOpt.get());
+        }
+        else throw new EntityNotFoundExceptionCustom(EntityNotFoundExceptionCustom.class);
+    }
 
     public PublicacionNuevaDto addResourceToDto (MultipartFile file,PublicacionNuevaDto dto) throws IOException, VideoException {
 
@@ -64,14 +74,12 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
             dto.getResource().add(uri1);
             dto.getResource().add(uri2);
             return dto;
-
     }
 
     private void delteResourcesToPublicacion(Publicacion publicacion) throws IOException {
         List<String> listaLinks=publicacion.getListrecurso();
         listaLinks=listaLinks.stream().map(x->fileService.getFileNameOnUrl(x)).collect(Collectors.toList());
         fileService.deleteListFile(listaLinks);
-
     }
 
 

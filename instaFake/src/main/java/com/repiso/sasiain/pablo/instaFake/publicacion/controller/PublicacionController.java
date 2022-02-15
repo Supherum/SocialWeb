@@ -48,5 +48,13 @@ public class PublicacionController {
         return publicacionServicio.editarPublicacion(id,dto,usuario);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> borrarPublicacion (@PathVariable("id") UUID id,
+                                                @AuthenticationPrincipal Usuario usuario) throws IOException, VideoException {
+
+        publicacionServicio.deletePublicacion(id,usuario);
+        return  ResponseEntity.ok().build();
+    }
+
 
 }
