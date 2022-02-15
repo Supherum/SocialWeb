@@ -1,5 +1,6 @@
 package com.repiso.sasiain.pablo.instaFake.shared.file.service;
 
+import io.github.techgnious.exception.VideoException;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ public interface FileService {
 
     String saveFile(MultipartFile file) throws IOException;
 
-    List<String> saveFileWithCopy(MultipartFile file,int size) throws IOException;
+    List<String> saveFileWithCopy(MultipartFile file,int size) throws IOException, VideoException;
 
     Stream<Path> loadAll();
 
@@ -33,4 +34,6 @@ public interface FileService {
     String rescaleAndSaveImagen(MultipartFile file,int size) throws IOException;
 
     String getUri(String nameFile);
+
+    String getFileNameOnUrl(String link);
 }

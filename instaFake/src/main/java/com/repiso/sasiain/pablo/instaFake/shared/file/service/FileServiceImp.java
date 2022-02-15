@@ -1,8 +1,13 @@
 package com.repiso.sasiain.pablo.instaFake.shared.file.service;
 
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.FileEmptyExceptionCustom;
+import com.repiso.sasiain.pablo.instaFake.error.exceptions.StorageExceptionCustom;
 import com.repiso.sasiain.pablo.instaFake.shared.file.config.StorageProperties;
 import com.repiso.sasiain.pablo.instaFake.shared.media_type.MediaTypeUrlResource;
+import io.github.techgnious.IVCompressor;
+import io.github.techgnious.dto.IVSize;
+import io.github.techgnious.dto.VideoFormats;
+import io.github.techgnious.exception.VideoException;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,10 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,23 +55,24 @@ public class FileServiceImp implements FileService{
             Files.copy(inputStream, this.ruta.resolve(nombreArchivo),
                     StandardCopyOption.REPLACE_EXISTING);
         }
-
         return nombreArchivo;
     }
 
     @Override
-    public List<String> saveFileWithCopy(MultipartFile file, int size) throws IOException {
-
+    public List<String> saveFileWithCopy(MultipartFile file, int size) throws IOException, VideoException {
         if(file.isEmpty()) throw new FileEmptyExceptionCustom(FileEmptyExceptionCustom.class);
-        String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
 
-        String nombreArchivo1=generateName(file);
-        nombreArchivo1+="."+extension;
-
-        Files.copy(file.getInputStream(),this.ruta.resolve(nombreArchivo1),StandardCopyOption.REPLACE_EXISTING);
-        String imagenEscalada=rescaleAndSaveImagen(file,size);
-
-        return List.of(nombreArchivo1,imagenEscalada);
+        if(file.getContentType().contains("video")){
+            String nombreArchivo1=saveFile(file);
+            String reescaledVideo=rescaleAndSaveVideo(file,200);
+            return List.of(nombreArchivo1,reescaledVideo);
+        }
+        if(file.getContentType().contains("image")){
+            String nombreArchivo1=saveFile(file);
+            String imagenEscalada=rescaleAndSaveImagen(file,size);
+            return List.of(nombreArchivo1,imagenEscalada);
+        }
+       throw new StorageExceptionCustom("Type of file not supported");
     }
 
     @Override
@@ -128,6 +131,21 @@ public class FileServiceImp implements FileService{
         return nombreArchivo;
     }
 
+    public String rescaleAndSaveVideo(MultipartFile file,int size) throws IOException, VideoException {
+        String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
+        String nombreArchivo=generateName(file);
+        nombreArchivo+="."+extension;
+
+        IVCompressor compressor=new IVCompressor();
+        IVSize customRes=new IVSize();
+        customRes.setHeight(size);
+        customRes.setWidth(size);
+        byte[] video =compressor.reduceVideoSizeWithCustomRes(file.getBytes(), VideoFormats.MP4,customRes);
+
+        Files.write(Paths.get("archivos/"+nombreArchivo),video);
+        return nombreArchivo;
+    }
+
     private String generateName (MultipartFile file){
         String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
 
@@ -151,5 +169,12 @@ public class FileServiceImp implements FileService{
                 .path(fileName)
                 .toUriString();
     }
+
+    public String getFileNameOnUrl(String link){
+        String []fragmentos=link.split("/");
+        link=fragmentos[fragmentos.length-1];
+        return link;
+    }
+
 
 }

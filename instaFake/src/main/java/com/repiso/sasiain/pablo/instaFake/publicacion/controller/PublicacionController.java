@@ -5,6 +5,7 @@ import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionResponseDto
 import com.repiso.sasiain.pablo.instaFake.publicacion.servicio.PublicacionServicio;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
+import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class PublicacionController {
     @PostMapping("/")
     public ResponseEntity<PublicacionResponseDto> nuevaPublicacion (@Valid @RequestPart ("publicacion") PublicacionNuevaDto dto,
                                                                     @RequestPart ("file") MultipartFile file,
-                                                                    @AuthenticationPrincipal Usuario usuario) throws IOException {
+                                                                    @AuthenticationPrincipal Usuario usuario) throws IOException, VideoException {
 
         dto=publicacionServicio.addResourceToDto(file,dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(publicacionServicio.guardarNuevaPublicacion(dto,usuario));
@@ -41,7 +42,7 @@ public class PublicacionController {
     public PublicacionResponseDto editarPublicacion (@PathVariable("id") UUID id,
                                                      @Valid @RequestPart ("publicacion") PublicacionNuevaDto dto,
                                                      @RequestPart ("file") MultipartFile file,
-                                                     @AuthenticationPrincipal Usuario usuario) throws IOException {
+                                                     @AuthenticationPrincipal Usuario usuario) throws IOException, VideoException {
 
         dto=publicacionServicio.addResourceToDto(file,dto);
         return publicacionServicio.editarPublicacion(id,dto,usuario);
