@@ -1,8 +1,7 @@
 package com.repiso.sasiain.pablo.instaFake.error.controller;
 
 
-import com.repiso.sasiain.pablo.instaFake.error.exceptions.EnityUniqueExceptionCustom;
-import com.repiso.sasiain.pablo.instaFake.error.exceptions.EntityNotFoundExceptionCustom;
+import com.repiso.sasiain.pablo.instaFake.error.exceptions.*;
 import com.repiso.sasiain.pablo.instaFake.error.model.GenericError;
 import com.repiso.sasiain.pablo.instaFake.error.model.SubError;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +31,27 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
         return GenericErrorBuilder(HttpStatus.BAD_REQUEST,ex, request);
     }
 
+    @ExceptionHandler({ForbiddenCustomError.class})
+    public ResponseEntity<?> handleUnAuthorizedException (ForbiddenCustomError ex, WebRequest request) {
+        return GenericErrorBuilder(HttpStatus.FORBIDDEN,ex, request);
+    }
+
+    @ExceptionHandler({StorageExceptionCustom.class})
+    public ResponseEntity<?> handleStorageExceptionCustom (StorageExceptionCustom ex, WebRequest request) {
+        return GenericErrorBuilder(HttpStatus.CONFLICT,ex, request);
+    }
+
+    @ExceptionHandler({FollowingErrorCustom.class})
+    public ResponseEntity<?> handleFollowingExceptionCustom(FollowingErrorCustom ex, WebRequest request) {
+        return GenericErrorBuilder(HttpStatus.CONFLICT,ex, request);
+    }
+
+    @ExceptionHandler({FileExceptionCustom.class})
+    public ResponseEntity<?> handleFileExceptionCustom(FileExceptionCustom ex, WebRequest request) {
+        return GenericErrorBuilder(HttpStatus.CONFLICT,ex, request);
+    }
+
+
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return GenericErrorBuilder(status, ex, request);
@@ -42,11 +62,8 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
         List<SubError> subErrorList = new ArrayList<>();
 
         ex.getAllErrors().forEach(error -> {
-
-            // Si el error de validación se ha producido a raíz de una anotación en un atributo...
             if (error instanceof FieldError) {
                 FieldError fieldError = (FieldError) error;
-
                 subErrorList.add(
                         SubError.builder()
                                 .object(fieldError.getObjectName())
@@ -59,7 +76,6 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
             else // Si no, es que se ha producido en una anotación a nivel de clase
             {
                 ObjectError objectError = (ObjectError) error;
-
                 subErrorList.add(
                         SubError.builder()
                                 .object(objectError.getObjectName())
@@ -67,19 +83,13 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
                                 .build()
                 );
             }
-
-
         });
-
 
         return GenercErrorWithSubErrorBuilder(HttpStatus.BAD_REQUEST, "Errores de validación",
                 request,
                 subErrorList.isEmpty() ? null : subErrorList
         );
     }
-
-
-
 
     private ResponseEntity<Object>  GenericErrorBuilder (HttpStatus status,Exception ex, WebRequest request ){
         return ResponseEntity.status(status).body(
@@ -104,6 +114,4 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
                                 .build()
                 );
     }
-
-
 }

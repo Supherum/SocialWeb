@@ -17,7 +17,7 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, UUID> 
 
     @Query(value = """
             SELECT p FROM Publicacion p JOIN FETCH p.usuario  u
-            u.nick= :nick
+            WHERE  u.nick= :nick
             """)
     public List<Publicacion> allPublicacionesDeUnUsuarioPorNickSeguidor(String nick);
 

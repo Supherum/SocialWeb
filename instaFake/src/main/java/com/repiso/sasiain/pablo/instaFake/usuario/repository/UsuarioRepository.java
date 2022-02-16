@@ -19,7 +19,42 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     @Query(value = """
             SELECT u FROM Usuario u JOIN FETCH u.publicacionList p 
-            WHERE u.id= :id
+            WHERE p.id= :id
             """)
-    public Usuario findPublicationUserId (UUID id);
+    public Usuario findUserByPublicacionId (UUID id);
+
+
+    // Con el usuario de la publicacion y el logeado compruebo que el logueado le sigue
+    @Query(value = """
+            SELECT u FROM Usuario u JOIN FETCH u.listaSeguidores ud
+            WHERE ud.id = :secondId
+            AND u.id = :firstId
+            """)
+    public List<Usuario> isfirstUserFollowingSecondUser (UUID firstId,UUID secondId);
+
+
+
+    @Query(value = """
+            SELECT s FROM Usuario u JOIN u.listaSolicitantes s
+            WHERE u.id = :id
+            """)
+    public List<Usuario> listaUsuariosQueMeSolicitanSeguirme (UUID id);
+
+    @Query(value = """
+            SELECT s FROM Usuario u JOIN u.listaSolicitados s
+            WHERE u.id = :id
+            """)
+    public List<Usuario> listaUsuariosQueSolicitoSeguir(UUID id);
+    @Query(value = """
+            SELECT s FROM Usuario u JOIN u.listaSigo s
+            WHERE u.id = :id
+            """)
+    public List<Usuario> listaUsuariosQueSigo(UUID id);
+    @Query(value = """
+            SELECT s FROM Usuario u JOIN u.listaSeguidores s
+            WHERE u.id = :id
+            """)
+    public List<Usuario> listaUsuariosQueMeSiguen(UUID id);
+
+
 }

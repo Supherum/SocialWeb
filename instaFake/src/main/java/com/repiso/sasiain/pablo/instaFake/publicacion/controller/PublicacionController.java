@@ -62,7 +62,7 @@ public class PublicacionController {
 
     @GetMapping ("/{id}")
     public PublicacionResponseDto getPublicacion (@PathVariable("id") UUID id,@AuthenticationPrincipal Usuario usuario){
-        return publicacionServicio.getPublicacion(id);
+        return publicacionServicio.getPublicacion(id,usuario);
     }
 
 

@@ -1,4 +1,7 @@
 package com.repiso.sasiain.pablo.instaFake.usuario.service.imp;
+import com.repiso.sasiain.pablo.instaFake.error.exceptions.EntityNotFoundExceptionCustom;
+import com.repiso.sasiain.pablo.instaFake.error.exceptions.FollowingErrorCustom;
+import com.repiso.sasiain.pablo.instaFake.error.exceptions.ForbiddenCustomError;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
@@ -25,6 +28,24 @@ public class UsuarioServiceImp implements UsuarioService {
     private final UsuarioRegisterDtoConverter usuarioRegisterDtoConverter;
     private final FileService fileService;
 
+
+    @Override
+    public String seguirUsuario(String nick, Usuario usuario) {
+        Optional<Usuario> usuarioAlQuieroSeguir=usuarioRepository.findFirstByNick(nick);
+        if(usuarioAlQuieroSeguir.isPresent()){
+            if(usuarioAlQuieroSeguir.get().getId().equals(usuario.getId())){
+                throw new FollowingErrorCustom();
+            }
+            List<Usuario> listaSolicitantes= usuarioRepository.listaUsuariosQueMeSolicitanSeguirme(usuarioAlQuieroSeguir.get().getId());
+            List<Usuario> listaSolicitoSeguir=usuarioRepository.listaUsuariosQueSolicitoSeguir(usuario.getId());
+            usuarioAlQuieroSeguir.get().setListaSolicitantes(listaSolicitantes);
+            usuario.setListaSolicitados(listaSolicitoSeguir);
+            usuarioAlQuieroSeguir.get().addSolicitanteToUsuario(usuario);
+            usuarioRepository.save(usuarioAlQuieroSeguir.get());
+            return null;
+        }
+        throw new EntityNotFoundExceptionCustom(Usuario.class);
+    }
 
     @Override
     public List<Usuario> findAll() {

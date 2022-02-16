@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Getter @Setter
 @Builder
@@ -81,6 +82,43 @@ public class Usuario implements Serializable, UserDetails {
     @Builder.Default
     @ManyToMany (fetch = FetchType.LAZY, mappedBy = "listaSolicitantes")
     private List<Usuario> listaSolicitados=new ArrayList<>();
+
+    // HELPERS
+
+    public void addSolicitanteToUsuario(Usuario usuario){
+        this.listaSolicitantes.add(usuario);
+        usuario.listaSolicitados.add(this);
+    }
+    public void deleteSolicitanteToUsuario(Usuario usuario){
+        this.listaSolicitantes.remove(usuario);
+        usuario.listaSolicitados=usuario.listaSolicitados.stream().filter(x->x.getNick()!=this.nick).collect(Collectors.toList());
+    }
+
+
+    public void addSeguidorToUsuario(Usuario usuario){
+        this.listaSeguidores.add(usuario);
+        usuario.listaSigo.add(this);
+    }
+    public void deleteSeguidorToUsuario(Usuario usuario){
+        this.listaSeguidores.remove(usuario);
+        usuario.listaSigo=usuario.listaSigo.stream().filter(x->x.getNick()!=this.nick).collect(Collectors.toList());
+    }
+
+
+    public void aceptarSolicitudDeUsuario(Usuario usuario){
+        this.listaSeguidores.add(usuario);
+        this.listaSolicitantes.remove(usuario);
+
+        usuario.listaSolicitados=usuario.listaSolicitados.stream().filter(x->x.getNick()!=this.nick).collect(Collectors.toList());
+        usuario.listaSigo.add(this);
+    }
+    public void denegarSolicitudDeUsuario(Usuario usuario){
+        this.listaSolicitantes.remove(usuario);
+        usuario.listaSolicitados=usuario.listaSolicitados.stream().filter(x->x.getNick()!=this.nick).collect(Collectors.toList());
+    }
+
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

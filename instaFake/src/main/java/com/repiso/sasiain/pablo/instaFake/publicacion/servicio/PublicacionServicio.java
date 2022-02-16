@@ -1,6 +1,7 @@
 package com.repiso.sasiain.pablo.instaFake.publicacion.servicio;
 
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.EntityNotFoundExceptionCustom;
+import com.repiso.sasiain.pablo.instaFake.error.exceptions.ForbiddenCustomError;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionNuevaDto;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionNuevaDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionResponseDto;
@@ -9,6 +10,7 @@ import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
 import com.repiso.sasiain.pablo.instaFake.publicacion.repository.PublicacionRepository;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.shared.service.BaseService;
+import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import com.repiso.sasiain.pablo.instaFake.usuario.repository.UsuarioRepository;
 import io.github.techgnious.exception.VideoException;
@@ -46,8 +48,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto,Usuario usuario) throws IOException {
         Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
         if(publicacionOpt.isPresent()){
-          // Usuario p=usuarioRepository.findPublicationUserId(publicacionOpt.get().getId());
-          // p.getId();
+            comprobarPropietarioDePublicacionOAdmin(usuario,publicacionOpt.get());
             delteResourcesToPublicacion(publicacionOpt.get());
             Publicacion publicacionEditada=publicacionNuevaDtoConverter.publicacionNuevaDtoEditPublicacion(dto,publicacionOpt.get());
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacionEditada));
@@ -59,16 +60,22 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
 
         Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
         if(publicacionOpt.isPresent()){
+            comprobarPropietarioDePublicacionOAdmin(usuario,publicacionOpt.get());
             delteResourcesToPublicacion(publicacionOpt.get());
             repository.delete(publicacionOpt.get());
         }
         else throw new EntityNotFoundExceptionCustom(EntityNotFoundExceptionCustom.class);
     }
 
-    public PublicacionResponseDto getPublicacion (UUID id){
+    public PublicacionResponseDto getPublicacion (UUID id,Usuario usuario){
         Optional<Publicacion> publicacionOpt = publicacionRepository.findById(id);
-        if(publicacionOpt.isPresent())
+        if(publicacionOpt.isPresent()){
+            Usuario usuarioDeLaPublicacion=usuarioRepository.findUserByPublicacionId(publicacionOpt.get().getId());
+            List<Usuario> lista=usuarioRepository.isfirstUserFollowingSecondUser(usuario.getId(),usuarioDeLaPublicacion.getId());
+
+            if (usuario.getRole()== Role.ADMIN || !publicacionOpt.get().isPrivate() )
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionOpt.get());
+        }
         throw new EntityNotFoundExceptionCustom(Publicacion.class);
     }
 
@@ -83,10 +90,6 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         List<PublicacionResponseDto> listaDto=lista.stream().map(publicacionResponseDtoConverter::publicacionToPublicacionResponseDto).collect(Collectors.toList());
         return listaDto;
     }
-
-
-
-
 
 
 
@@ -107,5 +110,11 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         List<String> listaLinks=publicacion.getListrecurso();
         listaLinks=listaLinks.stream().map(x->fileService.getFileNameOnUrl(x)).collect(Collectors.toList());
         fileService.deleteListFile(listaLinks);
+    }
+
+    private void comprobarPropietarioDePublicacionOAdmin(Usuario usuario,Publicacion publicacion){
+        Usuario usuarioDeLaPublicacion=usuarioRepository.findUserByPublicacionId(publicacion.getId());
+        if(!usuario.getId().toString().equals(usuarioDeLaPublicacion.getId().toString()) && usuario.getRole()!= Role.ADMIN)
+            throw new ForbiddenCustomError(Publicacion.class);
     }
 }

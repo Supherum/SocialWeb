@@ -13,6 +13,8 @@ import java.util.UUID;
 
 public interface UsuarioService {
 
+    public String seguirUsuario (String nick,Usuario usuario);
+
     public List<Usuario> findAll();
 
     public Page<Usuario> findAll(Pageable pageable);
