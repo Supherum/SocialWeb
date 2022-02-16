@@ -55,7 +55,8 @@
 							"script": {
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);\r",
-									"pm.collectionVariables.set(\"registrado\", jsonData.tokenJwt);"
+									"pm.collectionVariables.set(\"registrado\", jsonData.tokenJwt);\r",
+									"pm.collectionVariables.set(\"nickName\", jsonData.nick);"
 								],
 								"type": "text/javascript"
 							}
@@ -76,7 +77,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/foto.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/jpg.jpg"
 								}
 							]
 						},
@@ -166,7 +167,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/post.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
 								}
 							]
 						},
@@ -223,7 +224,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/foto.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
 								}
 							]
 						},
@@ -240,6 +241,126 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete Publicacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/publicacion/{{idPublicacion}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"publicacion",
+								"{{idPublicacion}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Una publicacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjMGE4MzgwMS03ZDZiLTE4MjEtODE3ZC02YmI4MjYwODAwMDAiLCJpYXQiOjE2MzgyMzMwMTIsIm5vbWJyZSI6Ikx1cyBNaWd1ZWwiLCJhcGVsbGlkb3MiOiJMb3BleiBNYWdhbmEiLCJuaWNrIjoiYWRtaW4iLCJyb2xlIjoiQWRtaW5pc3RyYWRvciJ9.bOStIzy7GohDbX46cJVuHhdf19E0IjOtS8AdU86ecE_x4nNadL3-8NIc1NL2RMuP",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/publicacion/{{idPublicacion}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"publicacion",
+								"{{idPublicacion}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Todas las Publicaciones públicas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjMGE4MzgwMS03ZDZiLTE4MjEtODE3ZC02YmI4MjYwODAwMDAiLCJpYXQiOjE2MzgyMzMwMTIsIm5vbWJyZSI6Ikx1cyBNaWd1ZWwiLCJhcGVsbGlkb3MiOiJMb3BleiBNYWdhbmEiLCJuaWNrIjoiYWRtaW4iLCJyb2xlIjoiQWRtaW5pc3RyYWRvciJ9.bOStIzy7GohDbX46cJVuHhdf19E0IjOtS8AdU86ecE_x4nNadL3-8NIc1NL2RMuP",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/publicacion/public",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"publicacion",
+								"public"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Todas las Publicaciones de Un usuairo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjMGE4MzgwMS03ZDZiLTE4MjEtODE3ZC02YmI4MjYwODAwMDAiLCJpYXQiOjE2MzgyMzMwMTIsIm5vbWJyZSI6Ikx1cyBNaWd1ZWwiLCJhcGVsbGlkb3MiOiJMb3BleiBNYWdhbmEiLCJuaWNrIjoiYWRtaW4iLCJyb2xlIjoiQWRtaW5pc3RyYWRvciJ9.bOStIzy7GohDbX46cJVuHhdf19E0IjOtS8AdU86ecE_x4nNadL3-8NIc1NL2RMuP",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/publicacion/usuario/{{nickName}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"publicacion",
+								"usuario",
+								"{{nickName}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -251,6 +372,10 @@
 		},
 		{
 			"key": "idPublicacion",
+			"value": ""
+		},
+		{
+			"key": "nickName",
 			"value": ""
 		}
 	]

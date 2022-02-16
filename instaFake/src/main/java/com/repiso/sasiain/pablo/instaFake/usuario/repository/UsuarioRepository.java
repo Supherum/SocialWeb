@@ -18,8 +18,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
 
     @Query(value = """
-            SELECT * FROM usuario u JOIN publicacion p 
-            WHERE usuario_id=:id
-            """,nativeQuery = true)
+            SELECT u FROM Usuario u JOIN FETCH u.publicacionList p 
+            WHERE u.id= :id
+            """)
     public Usuario findPublicationUserId (UUID id);
 }

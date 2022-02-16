@@ -46,8 +46,8 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto,Usuario usuario) throws IOException {
         Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
         if(publicacionOpt.isPresent()){
-            Usuario p=usuarioRepository.findPublicationUserId(publicacionOpt.get().getId());
-            p.getId();
+          // Usuario p=usuarioRepository.findPublicationUserId(publicacionOpt.get().getId());
+          // p.getId();
             delteResourcesToPublicacion(publicacionOpt.get());
             Publicacion publicacionEditada=publicacionNuevaDtoConverter.publicacionNuevaDtoEditPublicacion(dto,publicacionOpt.get());
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacionEditada));
@@ -65,6 +65,33 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         else throw new EntityNotFoundExceptionCustom(EntityNotFoundExceptionCustom.class);
     }
 
+    public PublicacionResponseDto getPublicacion (UUID id){
+        Optional<Publicacion> publicacionOpt = publicacionRepository.findById(id);
+        if(publicacionOpt.isPresent())
+            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionOpt.get());
+        throw new EntityNotFoundExceptionCustom(Publicacion.class);
+    }
+
+    public List<PublicacionResponseDto> getAllPublicaciones (){
+        List<Publicacion> lista=publicacionRepository.allPublicacionesPublicas();
+        List<PublicacionResponseDto> listaDto=lista.stream().map(publicacionResponseDtoConverter::publicacionToPublicacionResponseDto).collect(Collectors.toList());
+        return listaDto;
+    }
+
+    public List<PublicacionResponseDto> getPublicacionesUsuarioPorNick(String nick,Usuario usuario){
+        List<Publicacion> lista=publicacionRepository.allPublicacionesDeUnUsuarioPorNickSeguidor(nick);
+        List<PublicacionResponseDto> listaDto=lista.stream().map(publicacionResponseDtoConverter::publicacionToPublicacionResponseDto).collect(Collectors.toList());
+        return listaDto;
+    }
+
+
+
+
+
+
+
+    // UTILS FUNCTIONS
+
     public PublicacionNuevaDto addResourceToDto (MultipartFile file,PublicacionNuevaDto dto) throws IOException, VideoException {
 
             List<String> nombreArchivos=fileService.saveFileWithCopy(file,1024);
@@ -81,7 +108,4 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         listaLinks=listaLinks.stream().map(x->fileService.getFileNameOnUrl(x)).collect(Collectors.toList());
         fileService.deleteListFile(listaLinks);
     }
-
-
-
 }

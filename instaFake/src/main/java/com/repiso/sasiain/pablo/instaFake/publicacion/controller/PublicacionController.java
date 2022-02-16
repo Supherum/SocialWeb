@@ -7,7 +7,6 @@ import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import io.github.techgnious.exception.VideoException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,6 +52,24 @@ public class PublicacionController {
 
         publicacionServicio.deletePublicacion(id,usuario);
         return  ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/public")
+    public List<PublicacionResponseDto> todasLasPublicacionesPublicas (@AuthenticationPrincipal Usuario usuario){
+
+        return publicacionServicio.getAllPublicaciones();
+    }
+
+    @GetMapping ("/{id}")
+    public PublicacionResponseDto getPublicacion (@PathVariable("id") UUID id,@AuthenticationPrincipal Usuario usuario){
+        return publicacionServicio.getPublicacion(id);
+    }
+
+
+    @GetMapping("/usuario/{nick}")
+    public List<PublicacionResponseDto> getPublicacionesByNick (@PathVariable ("nick") String nick,
+                                                                @AuthenticationPrincipal Usuario usuario){
+        return publicacionServicio.getPublicacionesUsuarioPorNick(nick,usuario);
     }
 
 
