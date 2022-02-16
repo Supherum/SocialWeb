@@ -56,7 +56,8 @@
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);\r",
 									"pm.collectionVariables.set(\"registrado\", jsonData.tokenJwt);\r",
-									"pm.collectionVariables.set(\"nickName\", jsonData.nick);"
+									"pm.collectionVariables.set(\"nickName\", jsonData.nick);\r",
+									"pm.collectionVariables.set(\"usuarioId\", jsonData.id);"
 								],
 								"type": "text/javascript"
 							}
@@ -70,14 +71,14 @@
 							"formdata": [
 								{
 									"key": "usuario",
-									"value": "{ \"nick\":\"nick\",\"nombre\":\"usuario\",\"apellidos\":\"usuarioLastName\",\"email\":\"usuario@email.com\",\"password\":\"1234\",\"password2\":\"1234\"}",
+									"value": "{ \"nick\":\"Jose\",\"nombre\":\"usuario\",\"apellidos\":\"usuarioLastName\",\"email\":\"usuario@email.com\",\"password\":\"1234\",\"password2\":\"1234\"}",
 									"contentType": "application/json",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/jpg.jpg"
+									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
 								}
 							]
 						},
@@ -167,7 +168,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
+									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
 								}
 							]
 						},
@@ -192,8 +193,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData = JSON.parse(responseBody);\r",
-									"pm.collectionVariables.set(\"idPublicacion\", jsonData.id);"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -224,7 +224,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
+									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/jpg.jpg"
 								}
 							]
 						},
@@ -279,7 +279,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjMGE4MzgwMS03ZDZiLTE4MjEtODE3ZC02YmI4MjYwODAwMDAiLCJpYXQiOjE2MzgyMzMwMTIsIm5vbWJyZSI6Ikx1cyBNaWd1ZWwiLCJhcGVsbGlkb3MiOiJMb3BleiBNYWdhbmEiLCJuaWNrIjoiYWRtaW4iLCJyb2xlIjoiQWRtaW5pc3RyYWRvciJ9.bOStIzy7GohDbX46cJVuHhdf19E0IjOtS8AdU86ecE_x4nNadL3-8NIc1NL2RMuP",
+									"value": "{{registrado}}",
 									"type": "string"
 								}
 							]
@@ -309,7 +309,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjMGE4MzgwMS03ZDZiLTE4MjEtODE3ZC02YmI4MjYwODAwMDAiLCJpYXQiOjE2MzgyMzMwMTIsIm5vbWJyZSI6Ikx1cyBNaWd1ZWwiLCJhcGVsbGlkb3MiOiJMb3BleiBNYWdhbmEiLCJuaWNrIjoiYWRtaW4iLCJyb2xlIjoiQWRtaW5pc3RyYWRvciJ9.bOStIzy7GohDbX46cJVuHhdf19E0IjOtS8AdU86ecE_x4nNadL3-8NIc1NL2RMuP",
+									"value": "{{registrado}}",
 									"type": "string"
 								}
 							]
@@ -339,7 +339,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjMGE4MzgwMS03ZDZiLTE4MjEtODE3ZC02YmI4MjYwODAwMDAiLCJpYXQiOjE2MzgyMzMwMTIsIm5vbWJyZSI6Ikx1cyBNaWd1ZWwiLCJhcGVsbGlkb3MiOiJMb3BleiBNYWdhbmEiLCJuaWNrIjoiYWRtaW4iLCJyb2xlIjoiQWRtaW5pc3RyYWRvciJ9.bOStIzy7GohDbX46cJVuHhdf19E0IjOtS8AdU86ecE_x4nNadL3-8NIc1NL2RMuP",
+									"value": "{{registrado}}",
 									"type": "string"
 								}
 							]
@@ -357,6 +357,74 @@
 								"publicacion",
 								"usuario",
 								"{{nickName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Solicitudes",
+			"item": [
+				{
+					"name": "Solicitar Seguir Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario/seguir/{{nickName}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"seguir",
+								"{{nickName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Acceptar Seguimiento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario/seguir/aceptar/{{usuarioId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"seguir",
+								"aceptar",
+								"{{usuarioId}}"
 							]
 						}
 					},

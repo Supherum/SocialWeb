@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class UsuarioServiceImp implements UsuarioService {
 
 
     @Override
-    public String seguirUsuario(String nick, Usuario usuario) {
+    public String solicitarSeguirUsuario(String nick, Usuario usuario) {
         Optional<Usuario> usuarioAlQuieroSeguir=usuarioRepository.findFirstByNick(nick);
         if(usuarioAlQuieroSeguir.isPresent()){
             if(usuarioAlQuieroSeguir.get().getId().equals(usuario.getId())){
@@ -42,10 +43,30 @@ public class UsuarioServiceImp implements UsuarioService {
             usuario.setListaSolicitados(listaSolicitoSeguir);
             usuarioAlQuieroSeguir.get().addSolicitanteToUsuario(usuario);
             usuarioRepository.save(usuarioAlQuieroSeguir.get());
-            return null;
+            return "Ya has enviado la petición al usuario: "+nick;
         }
         throw new EntityNotFoundExceptionCustom(Usuario.class);
     }
+
+    @Override
+    public String aceptarSolicitudUsuario(Usuario usuario, UUID id) {
+        Optional<Usuario> usuarioQueQuieroAceptarOpt=usuarioRepository.findById(id);
+        if (usuarioQueQuieroAceptarOpt.isPresent()){
+            Usuario usuarioQueQuieroAceptar=usuarioQueQuieroAceptarOpt.get();
+
+            usuario=cargarUsuarioParaAceptarPeticion(usuario);
+            usuarioQueQuieroAceptar=cargarUsuarioParaAceptarPeticion(usuarioQueQuieroAceptar);
+
+            comprobarSiEstaElUsuarioQueQuieroAceptar(usuario,usuarioQueQuieroAceptar.getNick());
+
+            usuario.aceptarSolicitudDeUsuario(usuarioQueQuieroAceptar);
+            usuarioRepository.save(usuario);
+            return "Has aceptado al usuario: "+usuarioQueQuieroAceptar.getNick();
+
+        }
+        throw new EntityNotFoundExceptionCustom(Usuario.class);
+    }
+
 
     @Override
     public List<Usuario> findAll() {
@@ -84,4 +105,27 @@ public class UsuarioServiceImp implements UsuarioService {
     public void deleteById(UUID id) {
 
     }
+
+    private Usuario cargarUsuarioParaAceptarPeticion (Usuario usuario){
+        // aquí cargo un usuario con sus datos concretos sin hacer un fetch demasiado alto
+        List<Usuario> solicitantes = usuarioRepository.listaUsuariosQueMeSolicitanSeguirme(usuario.getId());
+        List<Usuario> solicito=usuarioRepository.listaUsuariosQueSolicitoSeguir(usuario.getId());
+        List<Usuario> sigo=usuarioRepository.listaUsuariosQueSigo(usuario.getId());
+        List<Usuario> meSiguen=usuarioRepository.listaUsuariosQueMeSiguen(usuario.getId());
+
+        usuario.setListaSeguidores(meSiguen);
+        usuario.setListaSolicitantes(solicitantes);
+        usuario.setListaSigo(sigo);
+        usuario.setListaSolicitados(solicito);
+        return usuario;
+    }
+
+    private void comprobarSiEstaElUsuarioQueQuieroAceptar(Usuario usuario,String nick){
+        List<Usuario> solicitantes=usuario.getListaSolicitantes();
+        solicitantes=solicitantes.stream().filter(x->x.getNick().equals(nick)).collect(Collectors.toList());
+        if(solicitantes.isEmpty())
+            throw new FollowingErrorCustom();
+    }
+
+
 }

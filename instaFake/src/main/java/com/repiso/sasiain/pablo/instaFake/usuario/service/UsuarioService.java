@@ -13,7 +13,9 @@ import java.util.UUID;
 
 public interface UsuarioService {
 
-    public String seguirUsuario (String nick,Usuario usuario);
+    public String solicitarSeguirUsuario (String nick,Usuario usuario);
+
+    public String aceptarSolicitudUsuario(Usuario u, UUID id);
 
     public List<Usuario> findAll();
 

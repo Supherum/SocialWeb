@@ -8,6 +8,7 @@ public class UsuarioLoginDtoResponseConverter {
 
     public UsuarioLoginDtoResponse UserAndTokenToUsuarioDtoResponse (Usuario usuario,String token){
         return UsuarioLoginDtoResponse.builder()
+                .id(usuario.getId())
                 .nick(usuario.getNick())
                 .nombre(usuario.getNombre())
                 .apellidos(usuario.getApellidos())

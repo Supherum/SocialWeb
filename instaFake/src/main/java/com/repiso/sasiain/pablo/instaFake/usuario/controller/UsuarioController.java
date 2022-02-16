@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/usuario")
@@ -20,8 +22,13 @@ public class UsuarioController {
     @PostMapping("/seguir/{nick}")
     public ResponseEntity<?> seguirUsuario (@AuthenticationPrincipal Usuario usuario, @PathVariable ("nick") String nick){
 
-        usuarioService.seguirUsuario(nick,usuario);
-        return null;
+        return ResponseEntity.ok(usuarioService.solicitarSeguirUsuario(nick,usuario));
+    }
+
+    @PostMapping("/seguir/aceptar/{id}")
+    public ResponseEntity<?> acceptarUsuario (@AuthenticationPrincipal Usuario usuario, @PathVariable ("id") UUID id){
+
+        return ResponseEntity.ok(usuarioService.aceptarSolicitudUsuario(usuario,id));
     }
 
 }
