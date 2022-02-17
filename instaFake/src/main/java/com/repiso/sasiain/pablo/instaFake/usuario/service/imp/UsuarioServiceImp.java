@@ -54,8 +54,8 @@ public class UsuarioServiceImp implements UsuarioService {
         if (usuarioQueQuieroAceptarOpt.isPresent()){
             Usuario usuarioQueQuieroAceptar=usuarioQueQuieroAceptarOpt.get();
 
-            usuario=cargarUsuarioParaAceptarPeticion(usuario);
-            usuarioQueQuieroAceptar=cargarUsuarioParaAceptarPeticion(usuarioQueQuieroAceptar);
+            usuario=cargarUsuario(usuario);
+            usuarioQueQuieroAceptar=cargarUsuario(usuarioQueQuieroAceptar);
 
             comprobarSiEstaElUsuarioQueQuieroAceptar(usuario,usuarioQueQuieroAceptar.getNick());
 
@@ -67,6 +67,20 @@ public class UsuarioServiceImp implements UsuarioService {
         throw new EntityNotFoundExceptionCustom(Usuario.class);
     }
 
+    public String declinarSolicitudUsuario(Usuario usuario,UUID id){
+        Optional<Usuario> usuarioQueQuieroDeclinarOpt=usuarioRepository.findById(id);
+        if(usuarioQueQuieroDeclinarOpt.isPresent()){
+            Usuario usuarioQueQuieroDeclinar=usuarioQueQuieroDeclinarOpt.get();
+
+            usuarioQueQuieroDeclinar=cargarUsuario(usuarioQueQuieroDeclinar);
+            usuario=cargarUsuario(usuario);
+
+            usuario.denegarSolicitudDeUsuario(usuarioQueQuieroDeclinar);
+            usuarioRepository.save(usuario);
+            return "Has rechazado la petición de: "+usuarioQueQuieroDeclinar.getNick();
+        }
+        throw  new EntityNotFoundExceptionCustom(Usuario.class);
+    }
 
     @Override
     public List<Usuario> findAll() {
@@ -98,15 +112,13 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public void delete(Usuario usuario) {
-
     }
 
     @Override
     public void deleteById(UUID id) {
-
     }
 
-    private Usuario cargarUsuarioParaAceptarPeticion (Usuario usuario){
+    private Usuario cargarUsuario (Usuario usuario){
         // aquí cargo un usuario con sus datos concretos sin hacer un fetch demasiado alto
         List<Usuario> solicitantes = usuarioRepository.listaUsuariosQueMeSolicitanSeguirme(usuario.getId());
         List<Usuario> solicito=usuarioRepository.listaUsuariosQueSolicitoSeguir(usuario.getId());

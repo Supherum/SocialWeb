@@ -71,9 +71,8 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         Optional<Publicacion> publicacionOpt = publicacionRepository.findById(id);
         if(publicacionOpt.isPresent()){
             Usuario usuarioDeLaPublicacion=usuarioRepository.findUserByPublicacionId(publicacionOpt.get().getId());
-            List<Usuario> lista=usuarioRepository.isfirstUserFollowingSecondUser(usuario.getId(),usuarioDeLaPublicacion.getId());
-
-            if (usuario.getRole()== Role.ADMIN || !publicacionOpt.get().isPrivate() )
+            boolean esSeguidor=comprobarSiUnUsuarioMeSigue(usuarioDeLaPublicacion,usuario);
+            if (usuario.getRole()== Role.ADMIN || !publicacionOpt.get().isPrivate() || esSeguidor)
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionOpt.get());
         }
         throw new EntityNotFoundExceptionCustom(Publicacion.class);
@@ -116,5 +115,11 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         Usuario usuarioDeLaPublicacion=usuarioRepository.findUserByPublicacionId(publicacion.getId());
         if(!usuario.getId().toString().equals(usuarioDeLaPublicacion.getId().toString()) && usuario.getRole()!= Role.ADMIN)
             throw new ForbiddenCustomError(Publicacion.class);
+    }
+
+    private boolean comprobarSiUnUsuarioMeSigue (Usuario usuarioDeLaPublicacion,Usuario usuarioAComprobar){
+        List<Usuario> listaSeguidoresUsuario=usuarioRepository.listaUsuariosQueMeSiguen(usuarioDeLaPublicacion.getId());
+        listaSeguidoresUsuario=listaSeguidoresUsuario.stream().filter(x->x.getNick().equals(usuarioAComprobar.getNick())).collect(Collectors.toList());
+        return !listaSeguidoresUsuario.isEmpty() || usuarioAComprobar.getNick().equals(usuarioDeLaPublicacion.getNick());
     }
 }

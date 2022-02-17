@@ -1,4 +1,4 @@
-package com.repiso.sasiain.pablo.instaFake.usuario.service;
+package com.repiso.sasiain.pablo.instaFake.usuario.service.auth;
 
 import com.repiso.sasiain.pablo.instaFake.shared.service.BaseService;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDto;

@@ -1,7 +1,7 @@
 package com.repiso.sasiain.pablo.instaFake.security.jwt;
 
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
-import com.repiso.sasiain.pablo.instaFake.usuario.service.UsuarioAuthService;
+import com.repiso.sasiain.pablo.instaFake.usuario.service.auth.UsuarioAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

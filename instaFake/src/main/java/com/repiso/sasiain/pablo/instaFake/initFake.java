@@ -48,13 +48,13 @@ public class initFake {
                 .listaSolicitantes(new ArrayList<>())
                 .build();
 
-        usuarioRepository.save(u);
-        usuarioRepository.save(u2);
+        //usuarioRepository.save(u);
+        //usuarioRepository.save(u2);
 
         u.addSolicitanteToUsuario(u2);
         u.addSolicitanteToUsuario(u);
 
-        usuarioRepository.save(u);
+        //usuarioRepository.save(u);
 
         List<Usuario> usuario2SolicitaLista =usuarioRepository.listaUsuariosQueSolicitoSeguir(u2.getId());
         List<Usuario> usuario1TieneSolicitud=usuarioRepository.listaUsuariosQueMeSolicitanSeguirme(u.getId());
@@ -62,7 +62,7 @@ public class initFake {
         u.aceptarSolicitudDeUsuario(u2);
         u.denegarSolicitudDeUsuario(u);
 
-        usuarioRepository.save(u);
+        //usuarioRepository.save(u);
 
         List<Usuario> usuariosQueMeSiguen=usuarioRepository.listaUsuariosQueMeSiguen(u.getId());
         List<Usuario> usuariosQueSigo=usuarioRepository.listaUsuariosQueSigo(u2.getId());

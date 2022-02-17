@@ -17,6 +17,8 @@ public interface UsuarioService {
 
     public String aceptarSolicitudUsuario(Usuario u, UUID id);
 
+    public String declinarSolicitudUsuario(Usuario usuario,UUID id);
+
     public List<Usuario> findAll();
 
     public Page<Usuario> findAll(Pageable pageable);

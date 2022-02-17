@@ -1,6 +1,6 @@
 package com.repiso.sasiain.pablo.instaFake.usuario.validation.validator;
 
-import com.repiso.sasiain.pablo.instaFake.usuario.service.UsuarioAuthService;
+import com.repiso.sasiain.pablo.instaFake.usuario.service.auth.UsuarioAuthService;
 import com.repiso.sasiain.pablo.instaFake.usuario.validation.anotation.UniqueField;
 import org.springframework.beans.factory.annotation.Autowired;
 

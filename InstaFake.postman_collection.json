@@ -78,7 +78,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
 								}
 							]
 						},
@@ -168,7 +168,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
 								}
 							]
 						},
@@ -224,7 +224,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/jpg.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
 								}
 							]
 						},
@@ -429,6 +429,37 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Borrar a un Solicitante",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario/rechazar/{{usuarioId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"rechazar",
+								"{{usuarioId}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -444,6 +475,10 @@
 		},
 		{
 			"key": "nickName",
+			"value": ""
+		},
+		{
+			"key": "usuarioId",
 			"value": ""
 		}
 	]

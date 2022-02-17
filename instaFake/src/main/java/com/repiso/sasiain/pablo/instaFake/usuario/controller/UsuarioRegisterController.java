@@ -7,7 +7,7 @@ import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioLoginDtoRespon
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDto;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
-import com.repiso.sasiain.pablo.instaFake.usuario.service.UsuarioAuthService;
+import com.repiso.sasiain.pablo.instaFake.usuario.service.auth.UsuarioAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.io.IOException;
