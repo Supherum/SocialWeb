@@ -2,6 +2,7 @@ package com.repiso.sasiain.pablo.instaFake.publicacion.controller;
 
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionNuevaDto;
 import com.repiso.sasiain.pablo.instaFake.publicacion.dto.PublicacionResponseDto;
+import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
 import com.repiso.sasiain.pablo.instaFake.publicacion.servicio.PublicacionServicio;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
@@ -72,5 +73,9 @@ public class PublicacionController {
         return publicacionServicio.getPublicacionesUsuarioPorNick(nick,usuario);
     }
 
+    @GetMapping("/mia")
+    public List<PublicacionResponseDto> getMisPublicaciones (@AuthenticationPrincipal Usuario usuario){
+        return  publicacionServicio.getPublicacionesUsuarioPorNick(usuario.getNick(),usuario);
+    }
 
 }

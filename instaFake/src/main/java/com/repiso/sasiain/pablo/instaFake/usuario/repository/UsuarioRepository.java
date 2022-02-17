@@ -45,4 +45,29 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             """)
     public List<Usuario> listaUsuariosQueMeSiguen(UUID id);
 
+    @Query(value = """
+            SELECT DISTINCT(NICK) FROM USUARIO
+            JOIN USUARIO_LISTA_SOLICITANTES
+            WHERE ID=LISTA_SOLICITANTES_ID           
+            """,nativeQuery = true)
+    public List<String> listaDeNickDeUsuaiosTienenSolicitudesPendientes ();
+
+    @Query(value = """
+            SELECT COUNT(*) FROM USUARIO
+            JOIN USUARIO_LISTA_SOLICITANTES
+            WHERE ID=LISTA_SOLICITANTES_ID
+            AND NICK=:nick           
+            """,nativeQuery = true)
+    public int numeroDeSolicitudesPendientesDeUnUsuario (String nick);
+
+    @Query(value = """
+            SELECT COUNT(*) FROM USUARIO
+            JOIN USUARIO_LISTA_SEGUIDORES
+            WHERE LISTA_SEGUIDORES_ID=ID 
+            AND NICK= :nick         
+            """,nativeQuery = true)
+    public int numeroDeSeguidores(String nick);
+
+
+
 }

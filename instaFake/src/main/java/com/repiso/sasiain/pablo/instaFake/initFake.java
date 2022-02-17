@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class initFake {
                 .password("1234")
                 .email("email.com")
                 .nombre("JUAN")
-                .isPrivado(false)
+                .isPrivado(true)
                 .listaSeguidores(new ArrayList<>())
                 .listaSigo(new ArrayList<>())
                 .listaSolicitados(new ArrayList<>())
@@ -48,13 +49,13 @@ public class initFake {
                 .listaSolicitantes(new ArrayList<>())
                 .build();
 
-        //usuarioRepository.save(u);
-        //usuarioRepository.save(u2);
+        usuarioRepository.save(u);
+        usuarioRepository.save(u2);
 
         u.addSolicitanteToUsuario(u2);
         u.addSolicitanteToUsuario(u);
 
-        //usuarioRepository.save(u);
+        usuarioRepository.save(u);
 
         List<Usuario> usuario2SolicitaLista =usuarioRepository.listaUsuariosQueSolicitoSeguir(u2.getId());
         List<Usuario> usuario1TieneSolicitud=usuarioRepository.listaUsuariosQueMeSolicitanSeguirme(u.getId());
@@ -62,11 +63,12 @@ public class initFake {
         u.aceptarSolicitudDeUsuario(u2);
         u.denegarSolicitudDeUsuario(u);
 
-        //usuarioRepository.save(u);
+        usuarioRepository.save(u);
 
         List<Usuario> usuariosQueMeSiguen=usuarioRepository.listaUsuariosQueMeSiguen(u.getId());
         List<Usuario> usuariosQueSigo=usuarioRepository.listaUsuariosQueSigo(u2.getId());
 
+        int macedonia= usuarioRepository.numeroDeSolicitudesPendientesDeUnUsuario("prueba");
 
     }
 

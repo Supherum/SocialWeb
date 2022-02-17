@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class UsuarioRegisterDtoConverter {
 
@@ -23,6 +25,11 @@ public class UsuarioRegisterDtoConverter {
                 .password(codificador.encode(dto.getPassword()))
                 .role(role)
                 .fotoPerfil(dto.getUri())
+                .isPrivado(dto.isPrivado())
+                .direccion(dto.getDireccion())
+                .telefono(dto.getTelefono())
+                .ciudad(dto.getCiudad())
+                .fechaNaciemiento(dto.getFechaDeNacimiento())
                 .build();
     }
 }

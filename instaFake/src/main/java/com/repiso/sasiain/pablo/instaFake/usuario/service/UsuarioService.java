@@ -1,5 +1,8 @@
 package com.repiso.sasiain.pablo.instaFake.usuario.service;
 
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.SolicitudesDtoResponse;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioEditDto;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioPerfilResponse;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDto;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import org.springframework.data.domain.Page;
@@ -13,23 +16,18 @@ import java.util.UUID;
 
 public interface UsuarioService {
 
-    public String solicitarSeguirUsuario (String nick,Usuario usuario);
+    String solicitarSeguirUsuario (String nick,Usuario usuario);
 
-    public String aceptarSolicitudUsuario(Usuario u, UUID id);
+    String aceptarSolicitudUsuario(Usuario u, UUID id);
 
-    public String declinarSolicitudUsuario(Usuario usuario,UUID id);
+    String declinarSolicitudUsuario(Usuario usuario,UUID id);
 
-    public List<Usuario> findAll();
+    List<SolicitudesDtoResponse> listaDePeticionesPendientes();
 
-    public Page<Usuario> findAll(Pageable pageable);
+    UsuarioPerfilResponse perfilDeUsuario(Usuario usuario,UUID id);
 
-    public Optional<Usuario> findById(UUID id);
+    Usuario save(UsuarioRegisterDto usuario, MultipartFile file) throws IOException;
 
-    public Usuario save(UsuarioRegisterDto usuario, MultipartFile file) throws IOException;
+    Usuario save(UsuarioEditDto dto, MultipartFile file, Usuario usuario) throws IOException;
 
-    public Usuario edit (UsuarioRegisterDto usuario,MultipartFile file);
-
-    public void delete(Usuario usuario);
-
-    public void deleteById(UUID id);
 }

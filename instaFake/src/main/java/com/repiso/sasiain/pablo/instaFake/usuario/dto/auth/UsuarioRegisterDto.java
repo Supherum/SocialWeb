@@ -24,4 +24,8 @@ public class UsuarioRegisterDto {
     private String password;
     private String password2;
     private String uri;
+    private boolean isPrivado;
+    private String direccion,telefono,ciudad;
+    private LocalDate fechaDeNacimiento;
+
 }

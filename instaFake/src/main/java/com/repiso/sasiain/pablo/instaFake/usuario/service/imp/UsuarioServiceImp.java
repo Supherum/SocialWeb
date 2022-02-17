@@ -3,6 +3,10 @@ import com.repiso.sasiain.pablo.instaFake.error.exceptions.EntityNotFoundExcepti
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.FollowingErrorCustom;
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.ForbiddenCustomError;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.SolicitudesDtoResponse;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioEditDto;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioEditDtoConverter;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioPerfilResponse;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,7 @@ public class UsuarioServiceImp implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioRegisterDtoConverter usuarioRegisterDtoConverter;
     private final FileService fileService;
+    private final UsuarioEditDtoConverter usuarioEditDtoConverter;
 
 
     @Override
@@ -83,19 +88,35 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
     @Override
-    public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+    public List<SolicitudesDtoResponse> listaDePeticionesPendientes() {
+        List<String> listaUsuariosQueSolicitan=usuarioRepository.listaDeNickDeUsuaiosTienenSolicitudesPendientes();
+        List<SolicitudesDtoResponse>listaSolicitudesResponse= listaUsuariosQueSolicitan.stream().map(x->solicitudesDtoCreatorResponse(x)).collect(Collectors.toList());
+        return listaSolicitudesResponse;
     }
 
     @Override
-    public Page<Usuario> findAll(Pageable pageable) {
-        return usuarioRepository.findAll(pageable);
+    public UsuarioPerfilResponse perfilDeUsuario(Usuario usuario,UUID id) {
+        Optional<Usuario> usuarioQueQuieroVerOpt=usuarioRepository.findById(id);
+        if(usuarioQueQuieroVerOpt.isPresent()) {
+            Usuario usuarioQueQuierover=usuarioQueQuieroVerOpt.get();
+            if (esMiSeguidorOPublico(usuario, usuarioQueQuieroVerOpt.get())) {
+
+                return UsuarioPerfilResponse.builder()
+                        .nick(usuarioQueQuierover.getNick())
+                        .id(usuarioQueQuierover.getId())
+                        .nombre(usuarioQueQuierover.getNombre())
+                        .apellidos(usuarioQueQuierover.getApellidos())
+                        .email(usuarioQueQuierover.getEmail())
+                        .fotoPerfil(usuarioQueQuierover.getFotoPerfil())
+                        .fechaNaciemiento(usuarioQueQuierover.getFechaNaciemiento())
+                        .seguidores(usuarioRepository.numeroDeSeguidores(usuarioQueQuierover.getNick()))
+                        .build();
+            }
+            throw new EntityNotFoundExceptionCustom(Usuario.class);
+        }
+        throw new EntityNotFoundExceptionCustom(Usuario.class);
     }
 
-    @Override
-    public Optional<Usuario> findById(UUID id) {
-        return usuarioRepository.findById(id);
-    }
 
     @Override
     public Usuario save(UsuarioRegisterDto dto,MultipartFile file) throws IOException {
@@ -106,20 +127,21 @@ public class UsuarioServiceImp implements UsuarioService {
     }
 
     @Override
-    public Usuario edit(UsuarioRegisterDto usuario,MultipartFile file) {
-        return null;
+    public Usuario save(UsuarioEditDto dto, MultipartFile file, Usuario usuario) throws IOException {
+        fileService.deleteFile(fileService.getFileNameOnUrl(usuario.getFotoPerfil()));
+        String nombreArchivo=fileService.rescaleAndSaveImagen(file,124);
+        String uri = fileService.getUri(nombreArchivo);
+        Usuario u=usuarioEditDtoConverter.editarUsuario(dto,usuario);
+        u.setFotoPerfil(uri);
+        u.setId(usuario.getId());
+        return usuarioRepository.save(u);
     }
 
-    @Override
-    public void delete(Usuario usuario) {
-    }
-
-    @Override
-    public void deleteById(UUID id) {
-    }
+    // UTILS
 
     private Usuario cargarUsuario (Usuario usuario){
-        // aquí cargo un usuario con sus datos concretos sin hacer un fetch demasiado alto
+        // aquí cargo un usuario con sus datos concretos sin hacer un fetch demasiado alto pero con 4 consultas
+        // TODO hacerlo en una sola consulta que devuelva un DTO gigante con todo
         List<Usuario> solicitantes = usuarioRepository.listaUsuariosQueMeSolicitanSeguirme(usuario.getId());
         List<Usuario> solicito=usuarioRepository.listaUsuariosQueSolicitoSeguir(usuario.getId());
         List<Usuario> sigo=usuarioRepository.listaUsuariosQueSigo(usuario.getId());
@@ -137,6 +159,20 @@ public class UsuarioServiceImp implements UsuarioService {
         solicitantes=solicitantes.stream().filter(x->x.getNick().equals(nick)).collect(Collectors.toList());
         if(solicitantes.isEmpty())
             throw new FollowingErrorCustom();
+    }
+
+    private SolicitudesDtoResponse solicitudesDtoCreatorResponse (String nick){
+        int numero=usuarioRepository.numeroDeSolicitudesPendientesDeUnUsuario(nick);
+        return SolicitudesDtoResponse.builder()
+                .nick(nick)
+                .numeroPeticionesPendientes(numero)
+                .build();
+    }
+
+    private boolean esMiSeguidorOPublico(Usuario usuarioLogieado, Usuario usuarioQuiereVer){
+            List<Usuario> meSiguen=usuarioRepository.listaUsuariosQueMeSiguen(usuarioQuiereVer.getId());
+            meSiguen=meSiguen.stream().filter(x->x.getNick().equals(usuarioLogieado.getNick())).collect(Collectors.toList());
+            return !meSiguen.isEmpty() || usuarioLogieado.getNick().equals(usuarioQuiereVer.getNick()) || !usuarioQuiereVer.isPrivado();
     }
 
 
