@@ -13,7 +13,7 @@ Como idea general podría ser la siguiente:
 ## Peticiones a la API
 
 
-| Registro |
+| Registro | | |
 | ------------- | ------------- | ------------- |
 | POST | Registrar usuario  |  localhost:8080/register/usuario |
 | POST | Logear un usuario  | localhost:8080/login  |
@@ -21,7 +21,7 @@ Como idea general podría ser la siguiente:
 
 
 
-| Publicaciones |
+| Publicaciones | | |
 | ------------- | ------------- | ------------- |  
 |POST| Nueva publicación  |  localhost:8080/publicacion/ |
 | POST | Agregar un recurso a una publicación  | localhost:8080/publicacion/resource/add/{{IdPublicacion}} |
@@ -33,14 +33,14 @@ Como idea general podría ser la siguiente:
 | GET | Ver mis publicaciones | http://localhost:8080/publicacion/mia |
 
 
-| Solicitudes |
+| Solicitudes | | |
 | ------------- | ------------- | ------------- |  
 | POST | Solicitar seguir a un Usuario | http://localhost:8080/usuario/seguir/{{nickName}} |
 | POST | Aceptar seguir a un usuario | http://localhost:8080/usuario/seguir/{{nickName}} | 
 | DELETE | Denegar un seguimiento de ususario | http://localhost:8080/usuario/rechazar/{{usuarioId}} |
 | GET | Ver las solicitudes pendientes | localhost:8080/usuario/seguidores |
 
-| Usuario |
+| Usuario | | |
 | ------------- | ------------- | ------------- |  
 | GET | Ver el perfil de un Usuario | localhost:8080/usuario/{{usuarioId}} |
 | PUT | Actualizar mi perfil | localhost:8080/usuario/me |
