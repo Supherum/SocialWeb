@@ -32,9 +32,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     private final FiltroSeguridad filtroSeguridad;
 
-
-
-    // Nos traemos un objeto de tipo AuthenticationManager
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -46,9 +43,6 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(codificador);
     }
 
-
-
-    // La configuración de todas las rutas
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -65,11 +59,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register/usuario").permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
 
         http.addFilterBefore(filtroSeguridad, UsernamePasswordAuthenticationFilter.class);
 
-        // Para dar acceso a h2
         http.headers().frameOptions().disable();
 
 

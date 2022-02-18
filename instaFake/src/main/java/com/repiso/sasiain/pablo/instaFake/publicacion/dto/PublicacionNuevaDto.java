@@ -14,9 +14,9 @@ import java.util.List;
 @Builder
 public class PublicacionNuevaDto {
 
-    @NotEmpty
+    @NotEmpty(message = "{field.can.not.be.null}")
     private String titulo;
-    @NotEmpty
+    @NotEmpty(message = "{field.can.not.be.null}")
     private String descripcion;
     @Builder.Default
     private boolean isPrivate=true;

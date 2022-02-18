@@ -71,14 +71,14 @@
 							"formdata": [
 								{
 									"key": "usuario",
-									"value": "{ \"nick\":\"Jose\",\"nombre\":\"usuario\",\"apellidos\":\"usuarioLastName\",\"email\":\"usuario@email.com\",\"password\":\"1234\",\"password2\":\"1234\"}",
+									"value": "{ \"nick\":\"Paco\",\"nombre\":\"usuario\",\"apellidos\":\"usuarioLastName\",\"email\":\"usuario@email.com\",\"password\":\"1234\",\"password2\":\"1234\",\"isPrivado\":true,\"fechaDeNacimiento\":\"1997-01-24\"}",
 									"contentType": "application/json",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/jpg.jpg"
 								}
 							]
 						},
@@ -161,14 +161,14 @@
 							"formdata": [
 								{
 									"key": "publicacion",
-									"value": "{\"titulo\":\"Primera publicación\",\"descripcion\":\"Esta es una descripcion muy pobre\",\"isPrivate\":false\n}",
+									"value": "{\"titulo\":\"Primera publicación\",\"descripcion\":\"Esta es una descripcion muy pobre\",\"isPrivate\":true\n}",
 									"contentType": "application/json",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/e45bc0d8e7fa296a16403eb3836bc75a.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
 								}
 							]
 						},
@@ -181,6 +181,58 @@
 							"path": [
 								"publicacion",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar un recurso a una publicacion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/jpg.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/publicacion/resource/add/{{idPublicacion}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"publicacion",
+								"resource",
+								"add",
+								"{{idPublicacion}}"
 							]
 						}
 					},
@@ -224,7 +276,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
+									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
 								}
 							]
 						},
@@ -361,6 +413,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Mis Publicaciones",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/publicacion/mia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"publicacion",
+								"mia"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -456,6 +538,155 @@
 								"usuario",
 								"rechazar",
 								"{{usuarioId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Solicitudes Pendientes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/seguidores",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"seguidores"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Ver Un Perfil de Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/{{usuarioId}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"{{usuarioId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserRegister Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "usuario",
+									"value": "{ \"nombre\":\"Amelio\",\"apellidos\":\"usuarioLastName\",\"email\":\"usuario@email.com\",\"isPrivado\":false}",
+									"contentType": "application/json",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/sfdgfsdhgsd.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/usuario/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fav a una Publicacion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/like/{{idPublicacion}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"like",
+								"{{idPublicacion}}"
 							]
 						}
 					},

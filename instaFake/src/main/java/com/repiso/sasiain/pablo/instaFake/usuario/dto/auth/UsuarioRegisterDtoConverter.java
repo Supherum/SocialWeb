@@ -20,7 +20,6 @@ public class UsuarioRegisterDtoConverter {
                 .nombre(dto.getNombre())
                 .apellidos(dto.getApellidos())
                 .email(dto.getEmail())
-                .fechaNaciemiento(dto.getFechaNacimiento())
                 .nick(dto.getNick())
                 .password(codificador.encode(dto.getPassword()))
                 .role(role)

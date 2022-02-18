@@ -30,4 +30,6 @@ public interface UsuarioService {
 
     Usuario save(UsuarioEditDto dto, MultipartFile file, Usuario usuario) throws IOException;
 
+    String likePublicacion (Usuario usuario,UUID id);
+
 }

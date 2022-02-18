@@ -2,6 +2,8 @@ package com.repiso.sasiain.pablo.instaFake.usuario.service.imp;
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.EntityNotFoundExceptionCustom;
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.FollowingErrorCustom;
 import com.repiso.sasiain.pablo.instaFake.error.exceptions.ForbiddenCustomError;
+import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
+import com.repiso.sasiain.pablo.instaFake.publicacion.repository.PublicacionRepository;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.SolicitudesDtoResponse;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioEditDto;
@@ -33,6 +35,7 @@ public class UsuarioServiceImp implements UsuarioService {
     private final UsuarioRegisterDtoConverter usuarioRegisterDtoConverter;
     private final FileService fileService;
     private final UsuarioEditDtoConverter usuarioEditDtoConverter;
+    private final PublicacionRepository publicacionRepository;
 
 
     @Override
@@ -135,6 +138,23 @@ public class UsuarioServiceImp implements UsuarioService {
         u.setFotoPerfil(uri);
         u.setId(usuario.getId());
         return usuarioRepository.save(u);
+    }
+
+
+    public String likePublicacion (Usuario usuario,UUID id){
+        Optional<Publicacion> pubOpt=publicacionRepository.findById(id);
+        if (pubOpt.isPresent()){
+            Usuario propietarioPublicacion=usuarioRepository.findUserByPublicacionId(pubOpt.get().getId());
+            esMiSeguidorOPublico(usuario,propietarioPublicacion);
+            List<Publicacion> listaPublicacionesQueMeGustan=publicacionRepository.listaDeFavoritosDeUnUsuario(usuario.getNick());
+            listaPublicacionesQueMeGustan.add(pubOpt.get());
+            usuario.setPublicacionesQueMeGustan(listaPublicacionesQueMeGustan);
+            usuarioRepository.save(usuario);
+            return "Has añadido la publicación "+pubOpt.get().getId()+" a tu lista de Favs";
+        }
+        throw new EntityNotFoundExceptionCustom(Publicacion.class);
+
+
     }
 
     // UTILS

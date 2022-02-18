@@ -45,6 +45,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             """)
     public List<Usuario> listaUsuariosQueMeSiguen(UUID id);
 
+
     @Query(value = """
             SELECT DISTINCT(NICK) FROM USUARIO
             JOIN USUARIO_LISTA_SOLICITANTES

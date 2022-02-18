@@ -47,8 +47,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
 
     public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto,Usuario usuario) throws IOException {
         Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
-        if(publicacionOpt.isPresent()){
-            comprobarPropietarioDePublicacionOAdmin(usuario,publicacionOpt.get());
+        if(publicacionOpt.isPresent() && comprobarPropietarioDePublicacionOAdmin(usuario,publicacionOpt.get())){
             delteResourcesToPublicacion(publicacionOpt.get());
             Publicacion publicacionEditada=publicacionNuevaDtoConverter.publicacionNuevaDtoEditPublicacion(dto,publicacionOpt.get());
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacionEditada));
@@ -59,8 +58,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     public void deletePublicacion (UUID id,Usuario usuario) throws IOException {
 
         Optional<Publicacion> publicacionOpt =publicacionRepository.findById(id);
-        if(publicacionOpt.isPresent()){
-            comprobarPropietarioDePublicacionOAdmin(usuario,publicacionOpt.get());
+        if(publicacionOpt.isPresent() && comprobarPropietarioDePublicacionOAdmin(usuario,publicacionOpt.get())){
             delteResourcesToPublicacion(publicacionOpt.get());
             repository.delete(publicacionOpt.get());
         }
@@ -85,9 +83,29 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     }
 
     public List<PublicacionResponseDto> getPublicacionesUsuarioPorNick(String nick,Usuario usuario){
-        List<Publicacion> lista=publicacionRepository.allPublicacionesDeUnUsuarioPorNickSeguidor(nick);
-        List<PublicacionResponseDto> listaDto=lista.stream().map(publicacionResponseDtoConverter::publicacionToPublicacionResponseDto).collect(Collectors.toList());
-        return listaDto;
+        Optional<Usuario> usuarioOpt = usuarioRepository.findFirstByNick(nick);
+        if (usuarioOpt.isPresent()){
+
+            if(comprobarSiUnUsuarioMeSigue(usuarioOpt.get(),usuario)){
+                List<Publicacion> lista=publicacionRepository.allPublicacionesDeUnUsuarioPorNickSeguidor(nick);
+                List<PublicacionResponseDto> listaDto=lista.stream().map(publicacionResponseDtoConverter::publicacionToPublicacionResponseDto).collect(Collectors.toList());
+                return listaDto;
+            }
+            throw new EntityNotFoundExceptionCustom(Publicacion.class);
+        }
+       throw new EntityNotFoundExceptionCustom(Usuario.class);
+    }
+
+    public PublicacionResponseDto addResourceToPublicacion(MultipartFile file,UUID id,Usuario usuario) throws IOException {
+        Optional<Publicacion> pubOpt=publicacionRepository.findById(id);
+        if(pubOpt.isPresent() && comprobarPropietarioDePublicacionOAdmin(usuario,pubOpt.get())){
+            String fileName=fileService.saveFile(file);
+            String uri =fileService.getUri(fileName);
+            pubOpt.get().getListrecurso().add(uri);
+            publicacionRepository.save(pubOpt.get());
+            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(pubOpt.get());
+        }
+        throw new EntityNotFoundExceptionCustom(Publicacion.class);
     }
 
 
@@ -111,10 +129,10 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         fileService.deleteListFile(listaLinks);
     }
 
-    private void comprobarPropietarioDePublicacionOAdmin(Usuario usuario,Publicacion publicacion){
+    private boolean comprobarPropietarioDePublicacionOAdmin(Usuario usuario,Publicacion publicacion){
         Usuario usuarioDeLaPublicacion=usuarioRepository.findUserByPublicacionId(publicacion.getId());
-        if(!usuario.getId().toString().equals(usuarioDeLaPublicacion.getId().toString()) && usuario.getRole()!= Role.ADMIN)
-            throw new ForbiddenCustomError(Publicacion.class);
+        return !usuario.getId().toString().equals(usuarioDeLaPublicacion.getId().toString()) && usuario.getRole()!= Role.ADMIN;
+
     }
 
     private boolean comprobarSiUnUsuarioMeSigue (Usuario usuarioDeLaPublicacion,Usuario usuarioAComprobar){

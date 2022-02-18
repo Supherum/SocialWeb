@@ -65,5 +65,11 @@ public class UsuarioController {
         return usuarioLoginDtoResponseConverter.UserAndTokenToUsuarioDtoResponse(usuarioService.save(dto,file,usuario),null);
     }
 
+    @PostMapping ("/like/{id}")
+    public ResponseEntity<?> addLikeToPublicacion (@AuthenticationPrincipal Usuario usuario,@PathVariable ("id") UUID id){
+
+        return ResponseEntity.ok(usuarioService.likePublicacion(usuario,id));
+    }
+
 
 }

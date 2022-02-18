@@ -63,9 +63,14 @@ public class FileServiceImp implements FileService{
         if(file.isEmpty()) throw new FileEmptyExceptionCustom(FileEmptyExceptionCustom.class);
 
         if(file.getContentType().contains("video")){
-            String nombreArchivo1=saveFile(file);
-            String reescaledVideo=rescaleAndSaveVideo(file,200);
-            return List.of(nombreArchivo1,reescaledVideo);
+            String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
+            if(extension.equals("mp4")){
+                String nombreArchivo1=saveFile(file);
+                String reescaledVideo=rescaleAndSaveVideo(file,200);
+                return List.of(nombreArchivo1,reescaledVideo);
+            }
+            else
+                throw new StorageExceptionCustom("Solo es soportado el formato mp4");
         }
         if(file.getContentType().contains("image")){
             String nombreArchivo1=saveFile(file);
@@ -133,6 +138,7 @@ public class FileServiceImp implements FileService{
 
     public String rescaleAndSaveVideo(MultipartFile file,int size) throws IOException, VideoException {
         String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
+
         String nombreArchivo=generateName(file);
         nombreArchivo+="."+extension;
 

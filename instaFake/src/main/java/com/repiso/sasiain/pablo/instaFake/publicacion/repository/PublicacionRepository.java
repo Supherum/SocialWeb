@@ -28,4 +28,12 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, UUID> 
             u.nick= :nick
             """)
     public List<Publicacion> allPublicacionesDeUnUsuarioPorNickNoSeguidor(String nick);
+
+
+    @Query(value = """
+            SELECT s FROM Usuario u JOIN u.publicacionesQueMeGustan s
+            WHERE u.nick = :nick
+            """)
+    public List<Publicacion> listaDeFavoritosDeUnUsuario(String nick);
+
 }

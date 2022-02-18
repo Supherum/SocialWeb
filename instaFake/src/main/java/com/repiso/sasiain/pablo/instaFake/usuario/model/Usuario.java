@@ -83,6 +83,10 @@ public class Usuario implements Serializable, UserDetails {
     @ManyToMany (fetch = FetchType.LAZY, mappedBy = "listaSolicitantes")
     private List<Usuario> listaSolicitados=new ArrayList<>();
 
+    @Builder.Default
+    @ManyToMany (fetch = FetchType.LAZY)
+    private List<Publicacion> publicacionesQueMeGustan=new ArrayList<>();
+
     // HELPERS
 
     public void addSolicitanteToUsuario(Usuario usuario){
@@ -93,7 +97,6 @@ public class Usuario implements Serializable, UserDetails {
         this.listaSolicitantes.remove(usuario);
         usuario.listaSolicitados=usuario.listaSolicitados.stream().filter(x->x.getNick()!=this.nick).collect(Collectors.toList());
     }
-
 
     public void addSeguidorToUsuario(Usuario usuario){
         this.listaSeguidores.add(usuario);
