@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: 2.2.0
+  google_fonts: ^2.3.1
   http: ^0.13.4
   intl: ^0.17.0
   timeago: ^3.2.2
@@ -66,9 +66,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/logo_miarmapp.png
-    - assets/images/avatar.jpeg
-    - assets/images/logoFacebook.png
+    - assets/images/
+    - assets/icons/
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

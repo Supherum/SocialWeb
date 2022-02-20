@@ -55,9 +55,9 @@ public class PublicacionController {
     }
 
     @GetMapping("/public")
-    public List<PublicacionResponseDto> todasLasPublicacionesPublicas (@AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<List<PublicacionResponseDto>> todasLasPublicacionesPublicas (@AuthenticationPrincipal Usuario usuario){
 
-        return publicacionServicio.getAllPublicaciones();
+        return ResponseEntity.ok(publicacionServicio.getAllPublicaciones());
     }
 
     @GetMapping ("/{id}")

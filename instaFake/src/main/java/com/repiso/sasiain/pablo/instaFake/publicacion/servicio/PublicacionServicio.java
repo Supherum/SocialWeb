@@ -10,6 +10,8 @@ import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
 import com.repiso.sasiain.pablo.instaFake.publicacion.repository.PublicacionRepository;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.shared.service.BaseService;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UserBasicInfoDto;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UserBasicInfoDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import com.repiso.sasiain.pablo.instaFake.usuario.repository.UsuarioRepository;
@@ -34,6 +36,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     private final PublicacionRepository publicacionRepository;
     private final PublicacionNuevaDtoConverter publicacionNuevaDtoConverter;
     private final PublicacionResponseDtoConverter publicacionResponseDtoConverter;
+    private final UserBasicInfoDtoConverter userBasicInfoDtoConverter;
     private final UsuarioRepository usuarioRepository;
     private final FileService fileService;
 
@@ -42,7 +45,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         Publicacion publicacion=publicacionNuevaDtoConverter.PublicacionNuevaDtoToPublicacion(dto);
         Usuario u=usuarioRepository.findFirstByNick(usuario.getNick()).get();
         publicacion.agregarUsuarioAPublicacion(u);
-        return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacion));
+        return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacion),userBasicInfoDtoConverter.userToUserBasicInfoDto(usuario));
     }
 
     public PublicacionResponseDto editarPublicacion (UUID id, PublicacionNuevaDto dto,Usuario usuario) throws IOException {
@@ -50,7 +53,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
         if(publicacionOpt.isPresent() && comprobarPropietarioDePublicacionOAdmin(usuario,publicacionOpt.get())){
             delteResourcesToPublicacion(publicacionOpt.get());
             Publicacion publicacionEditada=publicacionNuevaDtoConverter.publicacionNuevaDtoEditPublicacion(dto,publicacionOpt.get());
-            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacionEditada));
+            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionRepository.save(publicacionEditada),userBasicInfoDtoConverter.userToUserBasicInfoDto(usuario));
         }
         throw new EntityNotFoundExceptionCustom(EntityNotFoundExceptionCustom.class);
     }
@@ -71,14 +74,14 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
             Usuario usuarioDeLaPublicacion=usuarioRepository.findUserByPublicacionId(publicacionOpt.get().getId());
             boolean esSeguidor=comprobarSiUnUsuarioMeSigue(usuarioDeLaPublicacion,usuario);
             if (usuario.getRole()== Role.ADMIN || !publicacionOpt.get().isPrivate() || esSeguidor)
-            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionOpt.get());
+            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(publicacionOpt.get(),userBasicInfoDtoConverter.userToUserBasicInfoDto(usuarioDeLaPublicacion));
         }
         throw new EntityNotFoundExceptionCustom(Publicacion.class);
     }
 
     public List<PublicacionResponseDto> getAllPublicaciones (){
         List<Publicacion> lista=publicacionRepository.allPublicacionesPublicas();
-        List<PublicacionResponseDto> listaDto=lista.stream().map(publicacionResponseDtoConverter::publicacionToPublicacionResponseDto).collect(Collectors.toList());
+        List<PublicacionResponseDto> listaDto=lista.stream().map(x->publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(x,usuarioRepository.nickDeUnaPublicacion(x.getId()))).collect(Collectors.toList());
         return listaDto;
     }
 
@@ -88,7 +91,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
 
             if(comprobarSiUnUsuarioMeSigue(usuarioOpt.get(),usuario)){
                 List<Publicacion> lista=publicacionRepository.allPublicacionesDeUnUsuarioPorNickSeguidor(nick);
-                List<PublicacionResponseDto> listaDto=lista.stream().map(publicacionResponseDtoConverter::publicacionToPublicacionResponseDto).collect(Collectors.toList());
+                List<PublicacionResponseDto> listaDto=lista.stream().map(x->publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(x,userBasicInfoDtoConverter.userToUserBasicInfoDto(usuarioOpt.get()))).collect(Collectors.toList());
                 return listaDto;
             }
             throw new EntityNotFoundExceptionCustom(Publicacion.class);
@@ -103,7 +106,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
             String uri =fileService.getUri(fileName);
             pubOpt.get().getListrecurso().add(uri);
             publicacionRepository.save(pubOpt.get());
-            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(pubOpt.get());
+            return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(pubOpt.get(),userBasicInfoDtoConverter.userToUserBasicInfoDto(usuario));
         }
         throw new EntityNotFoundExceptionCustom(Publicacion.class);
     }

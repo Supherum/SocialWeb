@@ -1,6 +1,6 @@
 package com.repiso.sasiain.pablo.instaFake.usuario.repository;
 
-import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UserBasicInfoDto;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,6 +29,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             WHERE u.id = :id
             """)
     public List<Usuario> listaUsuariosQueMeSolicitanSeguirme (UUID id);
+
     @Query(value = """
             SELECT s FROM Usuario u JOIN u.listaSolicitados s
             WHERE u.id = :id
@@ -39,12 +40,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             WHERE u.id = :id
             """)
     public List<Usuario> listaUsuariosQueSigo(UUID id);
+
     @Query(value = """
             SELECT s FROM Usuario u JOIN u.listaSeguidores s
             WHERE u.id = :id
             """)
     public List<Usuario> listaUsuariosQueMeSiguen(UUID id);
-
 
     @Query(value = """
             SELECT DISTINCT(NICK) FROM USUARIO
@@ -69,6 +70,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
             """,nativeQuery = true)
     public int numeroDeSeguidores(String nick);
 
-
+    @Query(value = """
+            Select new com.repiso.sasiain.pablo.instaFake.usuario.dto.UserBasicInfoDto(u.nick,u.fotoPerfil,u.id) FROM Usuario u JOIN u.publicacionList p
+            WHERE p.id=:id
+            """)
+    public UserBasicInfoDto nickDeUnaPublicacion(UUID id);
 
 }

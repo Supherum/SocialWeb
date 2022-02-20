@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/login',
-  routes: {
-    '/': (context) => const MenuScreen(),
-    '/login': (context) => const LoginScreen(),
-    '/register': (context) => const RegisterScreen(),
-  },
+      routes: {
+        '/': (context) => const MenuScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+      },
     );
   }
 }

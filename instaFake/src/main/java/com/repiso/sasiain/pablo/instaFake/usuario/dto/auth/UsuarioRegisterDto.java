@@ -2,7 +2,6 @@ package com.repiso.sasiain.pablo.instaFake.usuario.dto.auth;
 
 import com.repiso.sasiain.pablo.instaFake.usuario.validation.anotation.SamePassword;
 import com.repiso.sasiain.pablo.instaFake.usuario.validation.anotation.UniqueField;
-import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

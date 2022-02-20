@@ -31,7 +31,9 @@ public class Publicacion {
             }
     )
     private UUID id;
-    private String titulo,descripcion;
+    private String titulo;
+    @Lob
+    private String descripcion;
     private boolean isPrivate;
     @CreatedDate
 

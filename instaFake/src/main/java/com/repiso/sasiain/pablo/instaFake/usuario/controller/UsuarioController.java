@@ -2,11 +2,11 @@ package com.repiso.sasiain.pablo.instaFake.usuario.controller;
 
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.SolicitudesDtoResponse;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.UserBasicInfoDto;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioEditDto;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioPerfilResponse;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioLoginDtoResponse;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioLoginDtoResponseConverter;
-import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDto;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Usuario;
 import com.repiso.sasiain.pablo.instaFake.usuario.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -56,11 +56,25 @@ public class UsuarioController {
         return usuarioService.listaDePeticionesPendientes();
     }
 
+    @GetMapping("/seguidor/me")
+    public List<UserBasicInfoDto> misSeguidores(@AuthenticationPrincipal Usuario usuario){
+        return usuarioService.miListaDeSeguidores(usuario);
+    }
+
+    @GetMapping("/solicitan/me")
+    public List<UserBasicInfoDto> misSolicitudes(@AuthenticationPrincipal Usuario usuario){
+        return usuarioService.miListaDeSolicitudes(usuario);
+    }
+
+    @GetMapping("/sigo/me")
+    public List<UserBasicInfoDto> misUsuarioQueSigo(@AuthenticationPrincipal Usuario usuario){
+        return usuarioService.miListaDeSeguidos(usuario);
+    }
+
     @PutMapping("/me")
     public UsuarioLoginDtoResponse editarMiPerfil (@AuthenticationPrincipal Usuario usuario,
                                                    @Valid @RequestPart ("usuario") UsuarioEditDto dto,
                                                    @RequestPart ("file")MultipartFile file) throws IOException {
-
 
         return usuarioLoginDtoResponseConverter.UserAndTokenToUsuarioDtoResponse(usuarioService.save(dto,file,usuario),null);
     }
@@ -70,6 +84,8 @@ public class UsuarioController {
 
         return ResponseEntity.ok(usuarioService.likePublicacion(usuario,id));
     }
+
+
 
 
 }

@@ -5,10 +5,7 @@ import com.repiso.sasiain.pablo.instaFake.error.exceptions.ForbiddenCustomError;
 import com.repiso.sasiain.pablo.instaFake.publicacion.model.Publicacion;
 import com.repiso.sasiain.pablo.instaFake.publicacion.repository.PublicacionRepository;
 import com.repiso.sasiain.pablo.instaFake.shared.file.service.FileService;
-import com.repiso.sasiain.pablo.instaFake.usuario.dto.SolicitudesDtoResponse;
-import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioEditDto;
-import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioEditDtoConverter;
-import com.repiso.sasiain.pablo.instaFake.usuario.dto.UsuarioPerfilResponse;
+import com.repiso.sasiain.pablo.instaFake.usuario.dto.*;
 import com.repiso.sasiain.pablo.instaFake.usuario.dto.auth.UsuarioRegisterDtoConverter;
 import com.repiso.sasiain.pablo.instaFake.usuario.model.Role;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +33,7 @@ public class UsuarioServiceImp implements UsuarioService {
     private final FileService fileService;
     private final UsuarioEditDtoConverter usuarioEditDtoConverter;
     private final PublicacionRepository publicacionRepository;
-
+    private final UserBasicInfoDtoConverter userBasicInfoDtoConverter;
 
     @Override
     public String solicitarSeguirUsuario(String nick, Usuario usuario) {
@@ -95,6 +92,21 @@ public class UsuarioServiceImp implements UsuarioService {
         List<String> listaUsuariosQueSolicitan=usuarioRepository.listaDeNickDeUsuaiosTienenSolicitudesPendientes();
         List<SolicitudesDtoResponse>listaSolicitudesResponse= listaUsuariosQueSolicitan.stream().map(x->solicitudesDtoCreatorResponse(x)).collect(Collectors.toList());
         return listaSolicitudesResponse;
+    }
+
+    @Override
+    public List<UserBasicInfoDto> miListaDeSolicitudes(Usuario usuario) {
+        return usuarioRepository.listaUsuariosQueMeSolicitanSeguirme(usuario.getId()).stream().map(userBasicInfoDtoConverter::userToUserBasicInfoDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserBasicInfoDto> miListaDeSeguidores(Usuario usuario) {
+        return usuarioRepository.listaUsuariosQueMeSiguen(usuario.getId()).stream().map(userBasicInfoDtoConverter::userToUserBasicInfoDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserBasicInfoDto> miListaDeSeguidos(Usuario usuario) {
+        return usuarioRepository.listaUsuariosQueMeSiguen(usuario.getId()).stream().map(userBasicInfoDtoConverter::userToUserBasicInfoDto).collect(Collectors.toList());
     }
 
     @Override
