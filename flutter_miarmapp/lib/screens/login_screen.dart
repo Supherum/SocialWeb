@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               dropdownValue = newValue!;
                             });
                           },
-                          items: <String>['ENGLISH', 'ESPANISH']
+                          items: <String>['ENGLISH', 'SPANISH']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,

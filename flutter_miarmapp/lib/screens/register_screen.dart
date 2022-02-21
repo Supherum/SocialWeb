@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -11,10 +13,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  late DateTime _selectedDate = DateTime(2016, 12, 23);
+
+
+ImagePicker picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     double withTotal = MediaQuery.of(context).size.width;
-    DateTime _selectedDate = DateTime(2016, 12, 23);
     String dropdownValue = 'ENGLISH';
 
     DateTime? picked;
@@ -44,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               dropdownValue = newValue!;
                             });
                           },
-                          items: <String>['ENGLISH', 'ESPANISH']
+                          items: <String>['ENGLISH', 'SPANISH']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -66,18 +71,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Container(
                       margin: const EdgeInsets.only(top: 20),
                       child: ElevatedButton(
-                        onPressed: () => {},
+                        onPressed: () => {
+                          picker.pickImage(source: ImageSource.gallery)
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              FontAwesomeIcons.facebookSquare,
-                              color: Colors.white,
-                            ),
+                            
                             Container(
                                 margin: EdgeInsets.only(left: 5),
                                 child: Text(
-                                  'Continue with Facebook',
+                                  'Select your avatar',
                                   style: loginSocialWeb,
                                 ))
                           ],

@@ -100,7 +100,6 @@ public class FileServiceImp implements FileService{
         else   throw new FileNotFoundException(
                 "Could not read file: " + filename);
     }
-
     @Override
     public void deleteFile(String filename) throws IOException {
         Path ruta =Paths.get("archivos/"+filename);

@@ -27,7 +27,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nick\":\"nick\",\r\n    \"password\":\"1234\"\r\n}",
+							"raw": "{\r\n    \"nick\":\"Paco\",\r\n    \"password\":\"1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -71,7 +71,7 @@
 							"formdata": [
 								{
 									"key": "usuario",
-									"value": "{ \"nick\":\"Paco\",\"nombre\":\"usuario\",\"apellidos\":\"usuarioLastName\",\"email\":\"usuario@email.com\",\"password\":\"1234\",\"password2\":\"1234\",\"isPrivado\":true,\"fechaDeNacimiento\":\"1997-01-24\"}",
+									"value": "{ \"nick\":\"Supherum\",\"nombre\":\"usuario\",\"apellidos\":\"usuarioLastName\",\"email\":\"usuario@email.com\",\"password\":\"1234\",\"password2\":\"1234\",\"isPrivado\":true,\"fechaDeNacimiento\":\"1997-01-24\"}",
 									"contentType": "application/json",
 									"type": "text"
 								},
@@ -161,14 +161,14 @@
 							"formdata": [
 								{
 									"key": "publicacion",
-									"value": "{\"titulo\":\"Primera publicación\",\"descripcion\":\"Esta es una descripcion muy pobre\",\"isPrivate\":true\n}",
+									"value": "{\"titulo\":\"Un dia en el campo\",\"descripcion\":\"Fue un dia maravilloso con todas las personas que quiero a mi lado,  la playa de Formentera esta muy bien. :)\",\"isPrivate\":false\n}",
 									"contentType": "application/json",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/publicacionImages/bosque.jpg"
 								}
 							]
 						},
@@ -218,7 +218,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/jpg.jpg"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/sfdgfsdhgsd.jpg"
 								}
 							]
 						},
@@ -276,7 +276,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/estaf/Desktop/SocialWeb/files/X2Download.com-video prueba corto(360p).mp4"
+									"src": "/C:/Users/repiso.sapab21/Desktop/SocialWeb/files/sfdgfsdhgsd.jpg"
 								}
 							]
 						},
@@ -601,6 +601,96 @@
 							"path": [
 								"usuario",
 								"{{usuarioId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mis solicitantes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/solicitan/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"solicitan",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mis seguidores",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/solicitan/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"solicitan",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuarios que sigo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{registrado}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/sigo/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"sigo",
+								"me"
 							]
 						}
 					},

@@ -134,7 +134,7 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
 
     private boolean comprobarPropietarioDePublicacionOAdmin(Usuario usuario,Publicacion publicacion){
         Usuario usuarioDeLaPublicacion=usuarioRepository.findUserByPublicacionId(publicacion.getId());
-        return !usuario.getId().toString().equals(usuarioDeLaPublicacion.getId().toString()) && usuario.getRole()!= Role.ADMIN;
+        return usuario.getId().toString().equals(usuarioDeLaPublicacion.getId().toString()) || usuario.getRole()== Role.ADMIN;
 
     }
 
