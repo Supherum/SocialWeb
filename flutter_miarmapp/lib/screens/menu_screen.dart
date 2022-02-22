@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_miarmapp/pages/home_page.dart';
 import 'package:flutter_miarmapp/screens/home_screen.dart';
 import 'package:flutter_miarmapp/screens/profile_screen.dart';
 import 'package:flutter_miarmapp/screens/search_screen.dart';
@@ -16,7 +17,7 @@ class _MenuScreenState extends State<MenuScreen> {
   int _currentIndex = 0;
 
   List<Widget> pages = [
-    const HomeScreen(),
+    HomePageBloc(),
     const SearchScreen(),
     const SearchScreen(),
     const SearchScreen(),

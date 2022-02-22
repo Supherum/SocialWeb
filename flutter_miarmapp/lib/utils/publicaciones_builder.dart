@@ -1,17 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/models/publicacion_response.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 Widget publicacionesBuilder(List<PublicacionResponse> listaPublicacion) {
-  return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: listaPublicacion.length,
-      itemBuilder: (context, index) {
-        return _publicacionItemBuilder(listaPublicacion.elementAt(index));
-      });
+  return Expanded(
+    child: ListView.builder(
+        itemCount: listaPublicacion.length,
+        itemBuilder: (context, index) {
+          return _publicacionItemBuilder(listaPublicacion.elementAt(index));
+        }),
+  );
 }
 
 _publicacionItemBuilder(PublicacionResponse publicacion) {

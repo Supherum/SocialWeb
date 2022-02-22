@@ -124,7 +124,7 @@ public class FileServiceImp implements FileService{
     @Override
     public String rescaleAndSaveImagen(MultipartFile file,int size) throws IOException {
         String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
-        String nombreArchivo=generateName(file);
+        String nombreArchivo="R"+generateName(file);
         nombreArchivo+="."+extension;
 
         BufferedImage bufferedImage= ImageIO.read(file.getInputStream());
@@ -138,7 +138,7 @@ public class FileServiceImp implements FileService{
     public String rescaleAndSaveVideo(MultipartFile file,int size) throws IOException, VideoException {
         String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
 
-        String nombreArchivo=generateName(file);
+        String nombreArchivo="R"+generateName(file);
         nombreArchivo+="."+extension;
 
         IVCompressor compressor=new IVCompressor();

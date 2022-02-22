@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -102,7 +100,7 @@ ImagePicker picker = ImagePicker();
                         Container(
                             margin: const EdgeInsets.only(top: 30, bottom: 30),
                             child: Text(
-                              'OR',
+                              'AND',
                               style: TextStyle(
                                   fontWeight: FontWeight.w600, color: grey),
                             )),

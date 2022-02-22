@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class PublicacionService {
   Future<List<PublicacionResponse>> allPublicPublicaciones() async {
     var response = await http
-        .get(Uri.parse('http://10.0.2.2:8080/publicacion/public'), headers: {
+        .get(Uri.parse('$baseUrl/public'), headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     });

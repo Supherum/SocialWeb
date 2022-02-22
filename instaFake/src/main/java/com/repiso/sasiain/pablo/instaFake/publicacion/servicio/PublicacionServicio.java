@@ -99,12 +99,12 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
        throw new EntityNotFoundExceptionCustom(Usuario.class);
     }
 
-    public PublicacionResponseDto addResourceToPublicacion(MultipartFile file,UUID id,Usuario usuario) throws IOException {
+    public PublicacionResponseDto addResourceToPublicacion(MultipartFile file,UUID id,Usuario usuario) throws IOException, VideoException {
         Optional<Publicacion> pubOpt=publicacionRepository.findById(id);
         if(pubOpt.isPresent() && comprobarPropietarioDePublicacionOAdmin(usuario,pubOpt.get())){
-            String fileName=fileService.saveFile(file);
-            String uri =fileService.getUri(fileName);
-            pubOpt.get().getListrecurso().add(uri);
+            List<String> fileNames=fileService.saveFileWithCopy(file,1024);
+            fileNames=fileNames.stream().map(x->fileService.getUri(x)).collect(Collectors.toList());
+            fileNames.stream().map(x->pubOpt.get().getListrecurso().add(x));
             publicacionRepository.save(pubOpt.get());
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(pubOpt.get(),userBasicInfoDtoConverter.userToUserBasicInfoDto(usuario));
         }

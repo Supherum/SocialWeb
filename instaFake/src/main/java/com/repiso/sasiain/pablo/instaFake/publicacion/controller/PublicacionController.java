@@ -79,7 +79,7 @@ public class PublicacionController {
 
     @PostMapping("/resource/add/{id}")
     public PublicacionResponseDto addResourceToPublicacion (@AuthenticationPrincipal Usuario usuario,@PathVariable ("id") UUID id,
-                                                       @RequestPart ("file") MultipartFile file) throws IOException {
+                                                       @RequestPart ("file") MultipartFile file) throws IOException, VideoException {
 
         return publicacionServicio.addResourceToPublicacion(file,id,usuario);
     }
