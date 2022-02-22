@@ -45,11 +45,8 @@ public class FileServiceImp implements FileService{
     }
 
     @Override
-    public String saveFile(MultipartFile file) throws IOException {
+    public String saveFile(MultipartFile file,String nombreArchivo) throws IOException {
         if(file.isEmpty()) throw new FileEmptyExceptionCustom(FileEmptyExceptionCustom.class);
-        String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
-
-        String nombreArchivo=generateName(file)+"."+extension;
 
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, this.ruta.resolve(nombreArchivo),
@@ -58,24 +55,36 @@ public class FileServiceImp implements FileService{
         return nombreArchivo;
     }
 
+    public void saveFile (BufferedImage bufferedImage,String nombreArchivo,String extension) throws IOException {
+        OutputStream out=Files.newOutputStream(Paths.get("archivos/"+nombreArchivo));
+        ImageIO.write(bufferedImage,extension,out);
+    }
+
+    public void saveFile(byte[] arrayByte,String nombreArchivo,String extension) throws IOException {
+        Files.write(Paths.get("archivos/"+nombreArchivo+"."+extension),arrayByte);
+    }
+
     @Override
     public List<String> saveFileWithCopy(MultipartFile file, int size) throws IOException, VideoException {
         if(file.isEmpty()) throw new FileEmptyExceptionCustom(FileEmptyExceptionCustom.class);
+        String nombreArchivo=generateName(file);
+        String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
 
         if(file.getContentType().contains("video")){
-            String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
             if(extension.equals("mp4")){
-                String nombreArchivo1=saveFile(file);
-                String reescaledVideo=rescaleAndSaveVideo(file,200);
-                return List.of(nombreArchivo1,reescaledVideo);
+                String nombreArchivo1=saveFile(file,nombreArchivo+"."+extension);
+                byte [] video=rescaleVideo(file,400);
+                saveFile(video,"R_"+nombreArchivo,extension);
+                return List.of(nombreArchivo1,"R_"+nombreArchivo1);
             }
             else
                 throw new StorageExceptionCustom("Solo es soportado el formato mp4");
         }
         if(file.getContentType().contains("image")){
-            String nombreArchivo1=saveFile(file);
-            String imagenEscalada=rescaleAndSaveImagen(file,size);
-            return List.of(nombreArchivo1,imagenEscalada);
+            String nombreArchivo1=saveFile(file,nombreArchivo+"."+extension);
+            BufferedImage bI=resizeImagen(file,1024);
+            saveFile(bI,"R_"+nombreArchivo1,extension);
+            return List.of(nombreArchivo1,"R_"+nombreArchivo1);
         }
        throw new StorageExceptionCustom("Type of file not supported");
     }
@@ -116,10 +125,6 @@ public class FileServiceImp implements FileService{
         });
     }
 
-    @Override
-    public void deleteAll() {
-
-    }
 
     @Override
     public String rescaleAndSaveImagen(MultipartFile file,int size) throws IOException {
@@ -135,23 +140,20 @@ public class FileServiceImp implements FileService{
         return nombreArchivo;
     }
 
-    public String rescaleAndSaveVideo(MultipartFile file,int size) throws IOException, VideoException {
-        String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
+    private BufferedImage resizeImagen(MultipartFile file,int size) throws IOException {
+        BufferedImage bufferedImage= ImageIO.read(file.getInputStream());
+        return Scalr.resize(bufferedImage, size);
+    }
 
-        String nombreArchivo="R"+generateName(file);
-        nombreArchivo+="."+extension;
-
+    private byte[] rescaleVideo (MultipartFile file,int size) throws IOException, VideoException {
         IVCompressor compressor=new IVCompressor();
         IVSize customRes=new IVSize();
         customRes.setHeight(size);
         customRes.setWidth(size);
-        byte[] video =compressor.reduceVideoSizeWithCustomRes(file.getBytes(), VideoFormats.MP4,customRes);
-
-        Files.write(Paths.get("archivos/"+nombreArchivo),video);
-        return nombreArchivo;
+       return compressor.reduceVideoSizeWithCustomRes(file.getBytes(), VideoFormats.MP4,customRes);
     }
 
-    private String generateName (MultipartFile file){
+    public String generateName (MultipartFile file){
         String extension=StringUtils.getFilenameExtension(file.getOriginalFilename());
 
         Double nuevoNombreDigito = Math.random();

@@ -15,7 +15,7 @@ public interface FileService {
 
     void init() throws IOException;
 
-    String saveFile(MultipartFile file) throws IOException;
+    String saveFile(MultipartFile file,String nombreArchivo) throws IOException;
 
     List<String> saveFileWithCopy(MultipartFile file,int size) throws IOException, VideoException;
 
@@ -27,7 +27,6 @@ public interface FileService {
 
     void deleteFile(String filename) throws IOException;
 
-    void deleteAll();
 
     void deleteListFile(List<String> listFilename);
 
@@ -36,4 +35,7 @@ public interface FileService {
     String getUri(String nameFile);
 
     String getFileNameOnUrl(String link);
+
+    String generateName (MultipartFile file);
+
 }

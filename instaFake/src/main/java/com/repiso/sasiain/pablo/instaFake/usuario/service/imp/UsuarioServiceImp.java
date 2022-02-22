@@ -135,7 +135,8 @@ public class UsuarioServiceImp implements UsuarioService {
 
     @Override
     public Usuario save(UsuarioRegisterDto dto,MultipartFile file) throws IOException {
-        String ruta=fileService.saveFile(file);
+        String fileName=fileService.generateName(file);
+        String ruta=fileService.saveFile(file,fileName);
         Usuario u=usuarioRegisterDtoConverter.usuarioDtoToUsuario(dto, Role.USER);
         u.setFotoPerfil(ruta);
         return usuarioRepository.save(u);

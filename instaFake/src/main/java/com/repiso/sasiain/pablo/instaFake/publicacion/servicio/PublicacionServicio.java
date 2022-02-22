@@ -100,11 +100,12 @@ public class PublicacionServicio extends BaseService<Publicacion, UUID, Publicac
     }
 
     public PublicacionResponseDto addResourceToPublicacion(MultipartFile file,UUID id,Usuario usuario) throws IOException, VideoException {
+
         Optional<Publicacion> pubOpt=publicacionRepository.findById(id);
         if(pubOpt.isPresent() && comprobarPropietarioDePublicacionOAdmin(usuario,pubOpt.get())){
             List<String> fileNames=fileService.saveFileWithCopy(file,1024);
             fileNames=fileNames.stream().map(x->fileService.getUri(x)).collect(Collectors.toList());
-            fileNames.stream().map(x->pubOpt.get().getListrecurso().add(x));
+            fileNames.stream().map(x->pubOpt.get().getListrecurso().add(x)).collect(Collectors.toList());
             publicacionRepository.save(pubOpt.get());
             return publicacionResponseDtoConverter.publicacionToPublicacionResponseDto(pubOpt.get(),userBasicInfoDtoConverter.userToUserBasicInfoDto(usuario));
         }
