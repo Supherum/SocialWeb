@@ -44,7 +44,7 @@ _publicacionItemBuilder(PublicacionResponse publicacion) {
           ],
         ),
       ),
-      _imageBuilder(publicacion.listaRecursos),
+      _imageBuilder(_processImagesResized(publicacion.listaRecursos)),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -114,10 +114,9 @@ Widget _imageBuilder(List<String> listaUrls) {
       children: [
         SizedBox(
           height: 300,
-          child: ListView.builder(
+          child: PageView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: listaUrls.length,
-              shrinkWrap: true,
               itemBuilder: (context, index) {
                 return _imageBuilderItem(listaUrls.elementAt(index), context);
               }),
@@ -139,6 +138,12 @@ _imageBuilderItem(String imageUrl, context) {
     fit: BoxFit.cover,
     width: MediaQuery.of(context).size.width,
   );
+}
+
+List<String> _processImagesResized(List<String> listaoriginal){
+  List<String> lista = [];
+  lista=listaoriginal.where((element) => element.contains("R_")).toList();
+  return lista;
 }
 
 String _getImage(String url) {

@@ -8,19 +8,26 @@ abstract class PublicacionState extends Equatable {
 }
 
 class PublicacionInitial extends PublicacionState {}
-
+class GetPublicacioesStateError extends PublicacionState{
+  final String mensaje;
+  const GetPublicacioesStateError(this.mensaje);
+    List<Object> get props => [mensaje];
+}
 class GetPublicacioesPublicasState extends PublicacionState{
   final List<PublicacionResponse> publicacionesPublicas;
   const GetPublicacioesPublicasState(this.publicacionesPublicas);
 
     List<Object> get props => [publicacionesPublicas];
-
+}
+class GetPublicacioesDeUnUsuarioState extends PublicacionState{
+  final List<PublicacionResponse> publicacionesDeUnUsuario;
+  const GetPublicacioesDeUnUsuarioState(this.publicacionesDeUnUsuario);
+    List<Object> get props => [publicacionesDeUnUsuario];
+}
+class GetPublicacioesMiasState extends PublicacionState{
+  final List<PublicacionResponse> publicacionesDeUnUsuario;
+  const GetPublicacioesMiasState(this.publicacionesDeUnUsuario);
+    List<Object> get props => [publicacionesDeUnUsuario];
 }
 
-class GetPublicacioesPublicasStateError extends PublicacionState{
-  final String mensaje;
-  const GetPublicacioesPublicasStateError(this.mensaje);
-
-    List<Object> get props => [mensaje];
-}
 

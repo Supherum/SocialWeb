@@ -25,7 +25,7 @@ class HomePageBloc extends StatelessWidget {
              builder: (context,state){
                if(state is GetPublicacioesPublicasState){
                  return publicacionesBuilder(state.publicacionesPublicas);
-               }else if(state is GetPublicacioesPublicasStateError){
+               }else if(state is GetPublicacioesStateError){
                  return Text(state.mensaje);
                }else{
                  return const Text('Error');

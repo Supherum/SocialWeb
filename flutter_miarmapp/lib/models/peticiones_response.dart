@@ -1,25 +1,24 @@
-class UserShortInfo {
-  UserShortInfo({
-    required this.id,
+class PeticionesResponse {
+  PeticionesResponse({
     required this.nick,
     required this.fotoPerfil,
+    required this.id,
   });
-  
-  late final String id;
   late final String nick;
   late final String fotoPerfil;
-
-  UserShortInfo.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+  late final String id;
+  
+  PeticionesResponse.fromJson(Map<String, dynamic> json){
     nick = json['nick'];
     fotoPerfil = json['fotoPerfil'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['id'] = id;
     _data['nick'] = nick;
     _data['fotoPerfil'] = fotoPerfil;
+    _data['id'] = id;
     return _data;
   }
 }

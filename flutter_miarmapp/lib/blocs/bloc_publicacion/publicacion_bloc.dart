@@ -14,15 +14,37 @@ class PublicacionBloc extends Bloc<PublicacionEvent, PublicacionState> {
 
   PublicacionBloc(this.publicacionRepository) : super(PublicacionInitial()) {
 
-    on<PublicacionEvent>(_getPublicacionesPublicas);
+    on<GetPublicacioesPublicasEvent>(_getPublicacionesPublicas);
+    on<GetPublicacionesDeUnUsuarioEvent>(_getPublicacionesDeUnUsuario);
+    on<GetPublicacionesMiasEvent>(_getPublicacionesMias);
+
+
   }
 
-  void _getPublicacionesPublicas(PublicacionEvent event, Emitter<PublicacionState> emit) async {
+  void _getPublicacionesPublicas(GetPublicacioesPublicasEvent event, Emitter<PublicacionState> emit) async {
     try{
       final listaPublicaciones = await publicacionRepository.getAllPublicacionesPublicas();
       emit(GetPublicacioesPublicasState(listaPublicaciones));
     }on Exception catch (e){
-      emit(GetPublicacioesPublicasStateError(e.toString()));
+      emit(GetPublicacioesStateError(e.toString()));
+    }
+  }
+
+  void _getPublicacionesDeUnUsuario(GetPublicacionesDeUnUsuarioEvent event, Emitter<PublicacionState> emit)  async{
+     try{
+      final listaPublicaciones = await publicacionRepository.getAllPublicacionesDeUnUsuario(event.idUsuario);
+      emit(GetPublicacioesPublicasState(listaPublicaciones));
+    }on Exception catch (e){
+      emit(GetPublicacioesStateError(e.toString()));
+    }
+  }
+
+  void _getPublicacionesMias(GetPublicacionesMiasEvent event, Emitter<PublicacionState> emit) async{
+     try{
+      final listaPublicaciones = await publicacionRepository.getMisPublicaciones();
+      emit(GetPublicacioesPublicasState(listaPublicaciones));
+    }on Exception catch (e){
+      emit(GetPublicacioesStateError(e.toString()));
     }
   }
 }
