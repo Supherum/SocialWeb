@@ -1,4 +1,4 @@
-import 'package:flutter_miarmapp/models/login_response.dart';
+import 'package:flutter_miarmapp/models/auth/login_response.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {

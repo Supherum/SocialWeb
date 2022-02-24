@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_miarmapp/models/publicacion_response.dart';
+import 'package:flutter_miarmapp/models/publicacion/publicacion_response.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

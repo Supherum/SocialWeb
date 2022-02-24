@@ -1,4 +1,4 @@
-import 'package:flutter_miarmapp/models/publicacion_response.dart';
+import 'package:flutter_miarmapp/models/publicacion/publicacion_response.dart';
 
 abstract class PublicacionRepository {
 

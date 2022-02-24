@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_miarmapp/models/publicacion_response.dart';
+import 'package:flutter_miarmapp/models/publicacion/publicacion_response.dart';
 import 'package:flutter_miarmapp/utils/const.dart';
 import 'package:http/http.dart' as http;
 

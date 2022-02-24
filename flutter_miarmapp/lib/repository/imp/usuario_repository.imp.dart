@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:flutter_miarmapp/models/login_response.dart';
-import 'package:flutter_miarmapp/models/peticiones_response.dart';
-import 'package:flutter_miarmapp/models/usuario_info_response.dart';
+import 'package:flutter_miarmapp/models/auth/login_response.dart';
+import 'package:flutter_miarmapp/models/usuario/peticiones_response.dart';
+import 'package:flutter_miarmapp/models/usuario/usuario_info_response.dart';
+
 import 'package:flutter_miarmapp/repository/usuario_repository.dart';
 import 'package:flutter_miarmapp/utils/const.dart';
 import 'package:http/http.dart' as http;
@@ -9,18 +10,7 @@ import 'package:http/http.dart' as http;
 
 class UsuarioRepositoryImp implements UsuarioRespository{
 
-    @override
-    Future<LoginResponse> getUsuarioLogged () async {
-      var response = await http
-        .get(Uri.parse('$baseUrl/me'), headers: {
-      'Authorization': 'Bearer $token'
-      });
-      if (response.statusCode==200){
-        return LoginResponse.fromJson(jsonDecode(response.body));
-      }else{
-        throw Exception ('Error en la petición: $baseUrl/me');
-      }
-    }
+   
 
     @override
     Future<List<PeticionesResponse>> getSolicitantes () async {

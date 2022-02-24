@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/pages/home_page.dart';
-import 'package:flutter_miarmapp/screens/home_screen.dart';
 import 'package:flutter_miarmapp/screens/profile_screen.dart';
 import 'package:flutter_miarmapp/screens/search_screen.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
