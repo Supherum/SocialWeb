@@ -5,7 +5,6 @@ import 'package:flutter_miarmapp/utils/const.dart';
 import 'package:http/http.dart' as http;
 
 class PublicacionRepositoryImp extends PublicacionRepository{
-
   @override
   Future<List<PublicacionResponse>> getAllPublicacionesPublicas() async {
    var response = await http

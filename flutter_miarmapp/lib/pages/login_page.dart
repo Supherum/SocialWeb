@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarmapp/blocs/bloc_login/login_bloc.dart';
 import 'package:flutter_miarmapp/models/auth/login_dto.dart';
+import 'package:flutter_miarmapp/pages/home_page.dart';
 import 'package:flutter_miarmapp/repository/auth_repository.dart';
 import 'package:flutter_miarmapp/repository/imp/auth_repository_imp.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
@@ -59,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
             PreferenceUtils.setString("nick", state.loginResponse.nick);
             PreferenceUtils.setString(
                 "fechaNacimiento", state.loginResponse.fechaDeNacimiento);
-            Navigator.pushNamed(context, "/");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HomePageBloc()));
           } else if (state is LoginErrorState) {
             _showSnackbar(context, state.mensaje);
           }
@@ -184,33 +186,29 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                      height: 50,
-                      child: TextFormField(
-                        validator: (value) {
-                          return value == null || value.isEmpty
-                              ? 'Write a nickName'
-                              : null;
-                        },
-                        controller: nickController,
-                        decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide:
-                                  BorderSide(color: instagramBlue, width: 2),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                borderSide:
-                                    BorderSide(color: lightGrey, width: 2)),
-                            labelText: 'Phone number, username, or email',
-                            labelStyle: TextStyle(fontSize: 12, color: grey),
-                            filled: true,
-                            fillColor: lightestGrey),
-                      )),
+                  TextFormField(
+                    validator: (value) {
+                      return value == null || value.isEmpty
+                          ? 'Write a nickName'
+                          : null;
+                    },
+                    controller: nickController,
+                    decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide:
+                              BorderSide(color: instagramBlue, width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(color: lightGrey, width: 2)),
+                        labelText: 'Phone number, username, or email',
+                        labelStyle: TextStyle(fontSize: 12, color: grey),
+                        filled: true,
+                        fillColor: lightestGrey),
+                  ),
                   Container(
                       margin: const EdgeInsets.only(top: 7, bottom: 20),
-                      height: 50,
                       child: TextFormField(
                         validator: (value) {
                           return (value == null || value.isEmpty)
@@ -237,9 +235,15 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                       width: withTotal,
                       child: ElevatedButton(
-                        onPressed: () => {if (_fomrKey.currentState!.validate()) {
-                       BlocProvider.of<LoginBloc>(context).add(TryToLoginEvent(LoginDto(nick: nickController.text , password: passwordController.text)))
-                      }},
+                        onPressed: () {
+                          if (_fomrKey.currentState!.validate()) {
+                            final loginDto = LoginDto(
+                                nick: nickController.text,
+                                password: passwordController.text);
+                            BlocProvider.of<LoginBloc>(context)
+                                .add(TryToLoginEvent(loginDto));
+                          }
+                        },
                         child: const Text('Log in'),
                         style:
                             ElevatedButton.styleFrom(primary: instagramLogin),

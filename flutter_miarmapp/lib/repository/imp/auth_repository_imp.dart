@@ -9,12 +9,16 @@ import 'package:http/http.dart' as http;
 class AuthRepositoryImp extends AuthRepository {
   @override
   Future<LoginResponse> doLogin(LoginDto loginDto) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
     final response = await http.post(Uri.parse('$baseUrl/login'),
-    headers: {'Content-Type': 'application/json'}, body: loginDto.toJson());
-    if (response.statusCode==200){
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(loginDto.toJson()));
+    if (response.statusCode == 200) {
       return LoginResponse.fromJson(jsonDecode(response.body));
-    } else{
-      throw Exception ('Bad credentials');
+    } else {
+      throw Exception('Bad credentials');
     }
   }
 
