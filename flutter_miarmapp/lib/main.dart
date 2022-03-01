@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/pages/login_page.dart';
+import 'package:flutter_miarmapp/pages/register_page.dart';
 import 'package:flutter_miarmapp/screens/menu_screen.dart';
 import 'package:flutter_miarmapp/screens/register_screen.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MenuScreen(),
         '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterScreen(),
+        '/register': (context) => const RegisterPage(),
       },
     );
   }

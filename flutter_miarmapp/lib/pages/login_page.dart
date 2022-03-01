@@ -272,7 +272,9 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           margin: const EdgeInsets.only(left: 10),
                           child: InkWell(
-                            onTap: () => {},
+                            onTap: () => {
+                              Navigator.pushNamed(context,'/register')
+                            },
                             child: Text(
                               'Sign up',
                               style: TextStyle(

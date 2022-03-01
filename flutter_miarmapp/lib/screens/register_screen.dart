@@ -19,8 +19,8 @@ ImagePicker picker = ImagePicker();
   Widget build(BuildContext context) {
     double withTotal = MediaQuery.of(context).size.width;
     String dropdownValue = 'ENGLISH';
-
     DateTime? picked;
+    
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
