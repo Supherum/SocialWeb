@@ -7,43 +7,43 @@ abstract class RegisterState extends Equatable {
   List<Object> get props => [];
 }
 
-class RegisterInitial extends RegisterState {}
-class RegisterLoading extends RegisterState{}
+class RegisterInitialState  extends RegisterState {}
+class RegisterLoadingState  extends RegisterState{}
 
-class RegisterSuccess extends RegisterState{
+class RegisterSuccessState  extends RegisterState{
   final LoginResponse loginResponse;
-  const RegisterSuccess(this.loginResponse);
+  const RegisterSuccessState (this.loginResponse);
   @override
   List<Object> get props => [loginResponse];
 }
 
-class RegisterError extends RegisterState{
+class RegisterErrorState  extends RegisterState{
   final String message;
-  const RegisterError(this.message);
+  const RegisterErrorState (this.message);
   @override
   List<Object> get props => [message];
 }
 
-class RegisterImageSuccess extends RegisterState{
+class RegisterImageSuccessState extends RegisterState{
   final XFile file;
-  const RegisterImageSuccess(this.file);
+  const RegisterImageSuccessState (this.file);
   @override
   List<Object> get props => [file];
 }
 
-class RegisterImageError extends RegisterState{
+class RegisterImageErrorState  extends RegisterState{
   final String message;
-  const RegisterImageError(this.message);
+  const RegisterImageErrorState (this.message);
   @override
   List<Object> get props => [message];
 }
 
-class RegisterDateSuccess extends RegisterState{
+class RegisterDateSuccessState  extends RegisterState{
   final DateTime birthday;
-  const RegisterDateSuccess(this.birthday);
+  const RegisterDateSuccessState (this.birthday);
 }
 
-class RegisterDateError extends RegisterState{
+class RegisterDateErrorState  extends RegisterState{
   final String message;
-  const RegisterDateError(this.message);
+  const RegisterDateErrorState (this.message);
 }

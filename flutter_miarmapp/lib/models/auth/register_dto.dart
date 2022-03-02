@@ -4,28 +4,28 @@ class RegisterDto{
   required this.nick,
   required this.nombre,
   required this.apellidos,
-  required this.email,
+  this.email,
   required this.password,
   required this.password2,
-  required this.uri,
-  required this.isPrivado,
-  required this.direccion,
-  required this.telefono,
-  required this.ciudad,
+  this.uri,
+  this.isPrivado,
+  this.direccion,
+  this.telefono,
+  this.ciudad,
   required this.fechaDeNacimiento,
   });
 
   late final String nick;
   late final String nombre;
   late final String apellidos;
-  late final String email;
+  late final String? email;
   late final String password;
   late final String password2;
-  late final String uri;
-  late final bool isPrivado;
-  late final String direccion;
-  late final String telefono;
-  late final String ciudad;
+  late final String? uri;
+  late final bool? isPrivado;
+  late final String? direccion;
+  late final String? telefono;
+  late final String? ciudad;
   late final DateTime fechaDeNacimiento;
 
     RegisterDto.fromJson(Map<String, dynamic> json){

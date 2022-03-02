@@ -12,3 +12,20 @@ class SelectImageEvent extends RegisterEvent{
   @override
   List<Object> get props => [resource];
 }
+
+class SelectDateEvent extends RegisterEvent{
+  final BuildContext context;
+  const SelectDateEvent(this.context);
+  @override
+  List<Object> get props => [context];
+
+}
+
+class DoRegisterEvent extends RegisterEvent{
+  final XFile resource;
+  final RegisterDto dto;
+  const DoRegisterEvent(this.resource,this.dto);
+  @override
+  List<Object> get props => [resource,dto];
+
+}
