@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/pages/home_page.dart';
-import 'package:flutter_miarmapp/screens/profile_screen.dart';
-import 'package:flutter_miarmapp/screens/search_screen.dart';
+import 'package:flutter_miarmapp/pages/search_page.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
+import 'package:flutter_miarmapp/utils/preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MenuScreen extends StatefulWidget {
-  const MenuScreen({Key? key}) : super(key: key);
+class MenuPage extends StatefulWidget {
+  const MenuPage({Key? key}) : super(key: key);
 
   @override
-  _MenuScreenState createState() => _MenuScreenState();
+  State<MenuPage> createState() => _MenuPageState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _MenuPageState extends State<MenuPage> {
+  @override
+  void initState() {
+    PreferenceUtils.init();
+    super.initState();
+  }
+
   int _currentIndex = 0;
 
   List<Widget> pages = [
     HomePageBloc(),
-    const SearchScreen(),
-    const SearchScreen(),
-    const SearchScreen(),
-    const ProfileScreen()
+    const SearchPage(),
+    const SearchPage(),
+    const SearchPage(),
+    const SearchPage()
   ];
 
   @override
@@ -110,7 +116,10 @@ class _MenuScreenState extends State<MenuScreen> {
                         width: 1.2)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(''),
+                  child: Image.network(
+                    PreferenceUtils.getString('fotoPerfil').toString(),
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             )

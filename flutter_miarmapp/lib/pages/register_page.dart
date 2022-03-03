@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarmapp/blocs/bloc_login/login_bloc.dart';
 import 'package:flutter_miarmapp/blocs/bloc_register/register_bloc.dart';
 import 'package:flutter_miarmapp/models/auth/register_dto.dart';
-import 'package:flutter_miarmapp/pages/home_page.dart';
+import 'package:flutter_miarmapp/pages/menu_page.dart';
 import 'package:flutter_miarmapp/repository/auth_repository.dart';
 import 'package:flutter_miarmapp/repository/imp/auth_repository_imp.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
@@ -72,8 +72,8 @@ class _RegisterPageState extends State<RegisterPage> {
             PreferenceUtils.setString("nick", state.loginResponse.nick);
             PreferenceUtils.setString(
                 "fechaNacimiento", state.loginResponse.fechaDeNacimiento);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomePageBloc()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MenuPage()));
           } else if (state is RegisterErrorState) {
             _errorMessage(context, state.message);
           } else if (state is RegisterImageErrorState) {
@@ -331,14 +331,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (birthday != null && file != null) {
-                            final formato=DateFormat('y-MM-dd');
+                            final formato = DateFormat('y-MM-dd');
                             final registerDto = RegisterDto(
                                 nick: nickController.text,
                                 nombre: nameController.text,
                                 apellidos: lastNameController.text,
                                 password: passwordController.text,
                                 password2: password2Controller.text,
-                                fechaDeNacimiento:formato.format(birthday!));
+                                fechaDeNacimiento: formato.format(birthday!));
                             BlocProvider.of<RegisterBloc>(context)
                                 .add(DoRegisterEvent(file!, registerDto));
                           } else {

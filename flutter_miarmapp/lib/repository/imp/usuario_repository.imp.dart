@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter_miarmapp/models/auth/login_response.dart';
 import 'package:flutter_miarmapp/models/usuario/peticiones_response.dart';
 import 'package:flutter_miarmapp/models/usuario/usuario_info_response.dart';
 
@@ -7,67 +6,54 @@ import 'package:flutter_miarmapp/repository/usuario_repository.dart';
 import 'package:flutter_miarmapp/utils/const.dart';
 import 'package:http/http.dart' as http;
 
-
-class UsuarioRepositoryImp implements UsuarioRespository{
-
-   
-
-    @override
-    Future<List<PeticionesResponse>> getSolicitantes () async {
-      var response = await http
-        .get(Uri.parse('$baseUrl/usuario/solicitan/me'), headers: {
-      'Authorization': 'Bearer $token'
-      });
-      if (response.statusCode==200){
-        return List.from(jsonDecode(response.body))
+class UsuarioRepositoryImp implements UsuarioRespository {
+  @override
+  Future<List<PeticionesResponse>> getSolicitantes() async {
+    var response = await http.get(Uri.parse('$baseUrl/usuario/solicitan/me'),
+        headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      return List.from(jsonDecode(response.body))
           .map((e) => PeticionesResponse.fromJson(e))
           .toList();
-      }else{
-        throw Exception ('Error en la petición: $baseUrl/usuario/solicitan/me');
-      }
+    } else {
+      throw Exception('Error en la petición: $baseUrl/usuario/solicitan/me');
     }
+  }
 
-    @override
-    Future<List<PeticionesResponse>> getSeguidores () async {
-      var response = await http
-        .get(Uri.parse('$baseUrl/usuario/seguidor/me'), headers: {
-      'Authorization': 'Bearer $token'
-      });
-      if (response.statusCode==200){
-        return List.from(jsonDecode(response.body))
+  @override
+  Future<List<PeticionesResponse>> getSeguidores() async {
+    var response = await http.get(Uri.parse('$baseUrl/usuario/seguidor/me'),
+        headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      return List.from(jsonDecode(response.body))
           .map((e) => PeticionesResponse.fromJson(e))
           .toList();
-      }else{
-        throw Exception ('Error en la petición: $baseUrl/usuario/seguidor/me');
-      }
+    } else {
+      throw Exception('Error en la petición: $baseUrl/usuario/seguidor/me');
     }
+  }
 
-    @override
-    Future<List<PeticionesResponse>> getSeguidos () async {
-      var response = await http
-        .get(Uri.parse('$baseUrl/usuario/sigo/me'), headers: {
-      'Authorization': 'Bearer $token'
-      });
-      if (response.statusCode==200){
-        return List.from(jsonDecode(response.body))
+  @override
+  Future<List<PeticionesResponse>> getSeguidos() async {
+    var response = await http.get(Uri.parse('$baseUrl/usuario/sigo/me'),
+        headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      return List.from(jsonDecode(response.body))
           .map((e) => PeticionesResponse.fromJson(e))
           .toList();
-      }else{
-        throw Exception ('Error en la petición: $baseUrl/usuario/sigo/me');
-      }
+    } else {
+      throw Exception('Error en la petición: $baseUrl/usuario/sigo/me');
     }
+  }
 
-    @override
-    Future<UsuarioInfoResponse> getUsuarioInfo (String idUsuario) async {
-        var response = await http
-          .get(Uri.parse('$baseUrl/usuario/$idUsuario'), headers: {
-        'Authorization': 'Bearer $token'
-        });
-        if (response.statusCode==200){
-          return UsuarioInfoResponse.fromJson(jsonDecode(response.body));
-        }else{
-          throw Exception ('Error en la petición: $baseUrl/usuario/sigo/me');
-        }
-      }
-    
+  @override
+  Future<UsuarioInfoResponse> getUsuarioInfo(String idUsuario) async {
+    var response = await http.get(Uri.parse('$baseUrl/usuario/$idUsuario'),
+        headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 200) {
+      return UsuarioInfoResponse.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Error en la petición: $baseUrl/usuario/sigo/me');
+    }
+  }
 }

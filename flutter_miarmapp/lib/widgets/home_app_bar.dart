@@ -23,7 +23,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/register/publicacion');
+                        },
                         icon: SvgPicture.asset(
                           'assets/icons/add.svg',
                           color: Colors.black87,

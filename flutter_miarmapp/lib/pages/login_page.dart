@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarmapp/blocs/bloc_login/login_bloc.dart';
 import 'package:flutter_miarmapp/models/auth/login_dto.dart';
+import 'package:flutter_miarmapp/pages/menu_page.dart';
 import 'package:flutter_miarmapp/repository/auth_repository.dart';
 import 'package:flutter_miarmapp/repository/imp/auth_repository_imp.dart';
-import 'package:flutter_miarmapp/screens/menu_screen.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
 import 'package:flutter_miarmapp/utils/preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,8 +60,8 @@ class _LoginPageState extends State<LoginPage> {
             PreferenceUtils.setString("nick", state.loginResponse.nick);
             PreferenceUtils.setString(
                 "fechaNacimiento", state.loginResponse.fechaDeNacimiento);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MenuScreen()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const MenuPage()));
           } else if (state is LoginErrorState) {
             _showSnackbar(context, state.mensaje);
           }

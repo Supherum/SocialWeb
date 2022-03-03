@@ -19,7 +19,7 @@ public class PublicacionNuevaDto {
     @NotEmpty(message = "{field.can.not.be.null}")
     private String descripcion;
     @Builder.Default
-    private boolean isPrivate=true;
+    private boolean isPrivate=false;
     @Builder.Default
     private List<String> resource=new ArrayList<>();
 }
