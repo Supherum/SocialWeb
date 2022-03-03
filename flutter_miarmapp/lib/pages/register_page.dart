@@ -10,6 +10,7 @@ import 'package:flutter_miarmapp/styles/font_style.dart';
 import 'package:flutter_miarmapp/utils/preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -330,13 +331,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (birthday != null && file != null) {
+                            final formato=DateFormat('y-MM-dd');
                             final registerDto = RegisterDto(
                                 nick: nickController.text,
                                 nombre: nameController.text,
                                 apellidos: lastNameController.text,
                                 password: passwordController.text,
                                 password2: password2Controller.text,
-                                fechaDeNacimiento: birthday!);
+                                fechaDeNacimiento:formato.format(birthday!));
                             BlocProvider.of<RegisterBloc>(context)
                                 .add(DoRegisterEvent(file!, registerDto));
                           } else {
@@ -348,7 +350,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: ElevatedButton.styleFrom(primary: instagramBlue),
                       )),
                   Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: Text(
                       'By singing up, you agree to our',
                       style: TextStyle(color: grey, fontSize: 12),

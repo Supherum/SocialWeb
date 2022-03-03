@@ -7,7 +7,7 @@ import 'package:flutter_miarmapp/repository/auth_repository.dart';
 import 'package:flutter_miarmapp/utils/const.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-
+import 'package:http_parser/http_parser.dart';
 class AuthRepositoryImp extends AuthRepository {
   @override
   Future<LoginResponse> doLogin(LoginDto loginDto) async {
@@ -27,11 +27,13 @@ class AuthRepositoryImp extends AuthRepository {
   @override
   Future<LoginResponse> doRegister(RegisterDto dto,XFile file) async {
     var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/register/usuario'));
+    request.headers.addAll({'Content-Type': 'multipart/form-data'});
     request.files.add(await http.MultipartFile.fromPath('file', file.path));
-    request.fields['usuario']= jsonEncode(dto.toJson());
+    request.files.add( http.MultipartFile.fromString('usuario', jsonEncode(dto.toJson()), contentType: MediaType('application','json')));
     var res = await request.send();
+    var body = await res.stream.bytesToString();
     if(res.statusCode==201){
-      return LoginResponse.fromJson(jsonDecode(res.reasonPhrase!));
+      return LoginResponse.fromJson(jsonDecode(body));
     } else{
       throw Exception ('Error en la petición: $baseUrl/register/usuario');
     }    

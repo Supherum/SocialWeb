@@ -26,7 +26,7 @@ class RegisterDto{
   late final String? direccion;
   late final String? telefono;
   late final String? ciudad;
-  late final DateTime fechaDeNacimiento;
+  late final String fechaDeNacimiento;
 
     RegisterDto.fromJson(Map<String, dynamic> json){
     nick = json['nick'];
