@@ -8,13 +8,16 @@ abstract class PublicacionEvent extends Equatable {
 }
 
 class GetPublicacioesPublicasEvent extends PublicacionEvent{
-  const GetPublicacioesPublicasEvent();
+  final String token;
+  const GetPublicacioesPublicasEvent(this.token);
 }
 class GetPublicacionesDeUnUsuarioEvent extends PublicacionEvent{
   final String idUsuario;
-  const GetPublicacionesDeUnUsuarioEvent(this.idUsuario);
+  final String token;
+  const GetPublicacionesDeUnUsuarioEvent(this.idUsuario,this.token);
 }
 
 class GetPublicacionesMiasEvent extends PublicacionEvent{
-  const GetPublicacionesMiasEvent();
+  final String token;
+  const GetPublicacionesMiasEvent(this.token);
 }

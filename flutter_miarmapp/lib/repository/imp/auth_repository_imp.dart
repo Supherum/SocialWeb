@@ -40,7 +40,7 @@ class AuthRepositoryImp extends AuthRepository {
   }
 
   @override
-  Future<LoginResponse> getUsuarioLogged() async {
+  Future<LoginResponse> getUsuarioLogged(String token) async {
     var response = await http.get(Uri.parse('$baseUrl/me'),
         headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {

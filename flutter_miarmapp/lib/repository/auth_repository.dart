@@ -7,6 +7,6 @@ abstract class AuthRepository {
 
   Future <LoginResponse> doLogin (LoginDto loginDto);
   Future <LoginResponse> doRegister (RegisterDto dto,XFile file);
-  Future <LoginResponse> getUsuarioLogged ();
+  Future <LoginResponse> getUsuarioLogged (String token);
 
 }

@@ -98,12 +98,12 @@ class _RegisterPublicacionPageState extends State<RegisterPublicacionPage> {
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 30),
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(30),
                 child: Column(
                   children: [
                     SvgPicture.asset('assets/images/publicacion.svg'),
                     Container(
-                        margin: const EdgeInsets.only(top: 7),
+                        margin: const EdgeInsets.only(top: 20),
                         height: 50,
                         child: TextFormField(
                           controller: titleController,

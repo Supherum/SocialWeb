@@ -1,4 +1,4 @@
-import 'dart:async';
+
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -23,7 +23,7 @@ class PublicacionBloc extends Bloc<PublicacionEvent, PublicacionState> {
 
   void _getPublicacionesPublicas(GetPublicacioesPublicasEvent event, Emitter<PublicacionState> emit) async {
     try{
-      final listaPublicaciones = await publicacionRepository.getAllPublicacionesPublicas();
+      final listaPublicaciones = await publicacionRepository.getAllPublicacionesPublicas(event.token);
       emit(GetPublicacioesPublicasState(listaPublicaciones));
     }on Exception catch (e){
       emit(GetPublicacioesStateError(e.toString()));
@@ -32,7 +32,7 @@ class PublicacionBloc extends Bloc<PublicacionEvent, PublicacionState> {
 
   void _getPublicacionesDeUnUsuario(GetPublicacionesDeUnUsuarioEvent event, Emitter<PublicacionState> emit)  async{
      try{
-      final listaPublicaciones = await publicacionRepository.getAllPublicacionesDeUnUsuario(event.idUsuario);
+      final listaPublicaciones = await publicacionRepository.getAllPublicacionesDeUnUsuario(event.idUsuario,event.token);
       emit(GetPublicacioesPublicasState(listaPublicaciones));
     }on Exception catch (e){
       emit(GetPublicacioesStateError(e.toString()));
@@ -41,7 +41,7 @@ class PublicacionBloc extends Bloc<PublicacionEvent, PublicacionState> {
 
   void _getPublicacionesMias(GetPublicacionesMiasEvent event, Emitter<PublicacionState> emit) async{
      try{
-      final listaPublicaciones = await publicacionRepository.getMisPublicaciones();
+      final listaPublicaciones = await publicacionRepository.getMisPublicaciones(event.token);
       emit(GetPublicacioesPublicasState(listaPublicaciones));
     }on Exception catch (e){
       emit(GetPublicacioesStateError(e.toString()));

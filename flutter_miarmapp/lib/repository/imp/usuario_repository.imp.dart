@@ -1,19 +1,18 @@
 import 'dart:convert';
-import 'package:flutter_miarmapp/models/usuario/peticiones_response.dart';
+import 'package:flutter_miarmapp/models/usuario/short_user_response.dart';
 import 'package:flutter_miarmapp/models/usuario/usuario_info_response.dart';
-
 import 'package:flutter_miarmapp/repository/usuario_repository.dart';
 import 'package:flutter_miarmapp/utils/const.dart';
 import 'package:http/http.dart' as http;
-
 class UsuarioRepositoryImp implements UsuarioRespository {
-  @override
-  Future<List<PeticionesResponse>> getSolicitantes() async {
+
+  
+  Future<List<UserShortInfo>> getSolicitantes(String token) async {
     var response = await http.get(Uri.parse('$baseUrl/usuario/solicitan/me'),
         headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
-          .map((e) => PeticionesResponse.fromJson(e))
+          .map((e) => UserShortInfo.fromJson(e))
           .toList();
     } else {
       throw Exception('Error en la petición: $baseUrl/usuario/solicitan/me');
@@ -21,12 +20,12 @@ class UsuarioRepositoryImp implements UsuarioRespository {
   }
 
   @override
-  Future<List<PeticionesResponse>> getSeguidores() async {
+  Future<List<UserShortInfo>> getFollowers(String token) async {
     var response = await http.get(Uri.parse('$baseUrl/usuario/seguidor/me'),
         headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
-          .map((e) => PeticionesResponse.fromJson(e))
+          .map((e) => UserShortInfo.fromJson(e))
           .toList();
     } else {
       throw Exception('Error en la petición: $baseUrl/usuario/seguidor/me');
@@ -34,12 +33,12 @@ class UsuarioRepositoryImp implements UsuarioRespository {
   }
 
   @override
-  Future<List<PeticionesResponse>> getSeguidos() async {
+  Future<List<UserShortInfo>> getFollowing (String token) async {
     var response = await http.get(Uri.parse('$baseUrl/usuario/sigo/me'),
         headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
       return List.from(jsonDecode(response.body))
-          .map((e) => PeticionesResponse.fromJson(e))
+          .map((e) => UserShortInfo.fromJson(e))
           .toList();
     } else {
       throw Exception('Error en la petición: $baseUrl/usuario/sigo/me');
@@ -47,7 +46,7 @@ class UsuarioRepositoryImp implements UsuarioRespository {
   }
 
   @override
-  Future<UsuarioInfoResponse> getUsuarioInfo(String idUsuario) async {
+  Future<UsuarioInfoResponse> getUsuarioInfo(String idUsuario,String token) async {
     var response = await http.get(Uri.parse('$baseUrl/usuario/$idUsuario'),
         headers: {'Authorization': 'Bearer $token'});
     if (response.statusCode == 200) {
@@ -56,4 +55,5 @@ class UsuarioRepositoryImp implements UsuarioRespository {
       throw Exception('Error en la petición: $baseUrl/usuario/sigo/me');
     }
   }
+
 }

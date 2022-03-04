@@ -9,7 +9,7 @@ import 'package:http_parser/http_parser.dart';
 
 class PublicacionRepositoryImp extends PublicacionRepository {
   @override
-  Future<List<PublicacionResponse>> getAllPublicacionesPublicas() async {
+  Future<List<PublicacionResponse>> getAllPublicacionesPublicas(String token) async {
     var response = await http.get(Uri.parse('$baseUrl/publicacion/public'),
         headers: {
           'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ class PublicacionRepositoryImp extends PublicacionRepository {
 
   @override
   Future<List<PublicacionResponse>> getAllPublicacionesDeUnUsuario(
-      String nickName) async {
+      String nickName, String token) async {
     var response = await http
         .get(Uri.parse('$baseUrl/publicacion/usuario/$nickName'), headers: {
       'Content-Type': 'application/json',
@@ -43,8 +43,8 @@ class PublicacionRepositoryImp extends PublicacionRepository {
   }
 
   @override
-  Future<List<PublicacionResponse>> getMisPublicaciones() async {
-    var response = await http.get(Uri.parse('$baseUrl/publicacion/mio'),
+  Future<List<PublicacionResponse>> getMisPublicaciones(String token) async {
+    var response = await http.get(Uri.parse('$baseUrl/publicacion/mia'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
@@ -60,7 +60,7 @@ class PublicacionRepositoryImp extends PublicacionRepository {
   }
 
   @override
-  Future<PublicacionResponse> getUnaPublicacion(String idPublicacion) async {
+  Future<PublicacionResponse> getUnaPublicacion(String idPublicacion,String token) async {
     var response = await http
         .get(Uri.parse('$baseUrl/publicacion/$idPublicacion'), headers: {
       'Content-Type': 'application/json',
@@ -98,4 +98,5 @@ class PublicacionRepositoryImp extends PublicacionRepository {
       throw Exception('Error en la petición: $baseUrl/publicacion');
     }
   }
+
 }

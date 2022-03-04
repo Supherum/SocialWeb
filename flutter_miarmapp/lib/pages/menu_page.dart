@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_miarmapp/pages/home_page.dart';
+import 'package:flutter_miarmapp/pages/profile_page.dart';
 import 'package:flutter_miarmapp/pages/search_page.dart';
 import 'package:flutter_miarmapp/styles/font_style.dart';
 import 'package:flutter_miarmapp/utils/preferences.dart';
@@ -22,11 +23,11 @@ class _MenuPageState extends State<MenuPage> {
   int _currentIndex = 0;
 
   List<Widget> pages = [
-    HomePageBloc(),
+    const HomePageBloc(),
     const SearchPage(),
     const SearchPage(),
     const SearchPage(),
-    const SearchPage()
+    const ProfilePage()
   ];
 
   @override

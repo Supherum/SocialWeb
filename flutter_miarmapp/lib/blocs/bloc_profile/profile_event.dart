@@ -6,3 +6,18 @@ abstract class ProfileEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ProfileGetMyPostEvent extends ProfileEvent{
+  final String token;
+  const ProfileGetMyPostEvent(this.token);
+}
+
+class ProfileGetMyFollowerEvent extends ProfileEvent{
+   final String token;
+  const ProfileGetMyFollowerEvent(this.token);
+}
+
+class ProfileGetMyFollowingEvent extends ProfileEvent{
+  final String token;
+  const ProfileGetMyFollowingEvent(this.token);
+}
