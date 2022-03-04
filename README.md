@@ -53,3 +53,13 @@ obvio en el login y en el registro propiamente.
 
 
 ### Para probar postman hay que seleccionar los archivos de prueba que están adjuntos en el directorio de files. Hay 4 archivos, selecciona el que guste.
+
+
+## Algunas capturas de la aplicación
+
+![](https://cdn.discordapp.com/attachments/409448284080570368/949277762978455562/captura3.JPG)
+![](https://cdn.discordapp.com/attachments/409448284080570368/949277763230126120/captura6.JPG)
+![](https://cdn.discordapp.com/attachments/409448284080570368/949277763511148574/captura2.JPG)
+![](https://cdn.discordapp.com/attachments/409448284080570368/949277763901198347/captura4.JPG)
+![](https://cdn.discordapp.com/attachments/409448284080570368/949277766036103178/captura1.JPG)
+![](https://cdn.discordapp.com/attachments/409448284080570368/949277766585581570/captura5.JPG)

@@ -117,8 +117,8 @@ class _MenuPageState extends State<MenuPage> {
                         width: 1.2)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: Image.network(
-                    PreferenceUtils.getString('fotoPerfil').toString(),
+                  child: Image.network(_getImage(
+                    PreferenceUtils.getString('fotoPerfil').toString()),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -127,4 +127,10 @@ class _MenuPageState extends State<MenuPage> {
           ],
         ));
   }
+
+    String _getImage(String url) {
+  return url.replaceFirst("localhost", "10.0.2.2");
+}
+
+  
 }

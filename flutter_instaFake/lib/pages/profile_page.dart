@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_miarmapp/blocs/bloc_profile/profile_bloc.dart';
-import 'package:flutter_miarmapp/blocs/bloc_publicacion/publicacion_bloc.dart';
 import 'package:flutter_miarmapp/models/publicacion/publicacion_response.dart';
 import 'package:flutter_miarmapp/models/usuario/short_user_response.dart';
 import 'package:flutter_miarmapp/repository/imp/publicacion_repository.imp.dart';
@@ -116,8 +115,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 2)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: Image.network(
-                  PreferenceUtils.getString('fotoPerfil').toString(),
+                child: Image.network(_getImage(
+                  PreferenceUtils.getString('fotoPerfil').toString()),
                   fit: BoxFit.fill,
                 ),
               ),
